@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 import { loginRequest } from './actions'
 
 class Login extends Component {
@@ -81,7 +82,7 @@ class Login extends Component {
                 </Field>
                 <div className="btn-toolbar">
                     <button type="submit" className="btn btn-info">Login</button>
-                    <a className="btn btn-warning pull-right">Register</a>
+                    <Link className="btn btn-warning pull-right" to="/register">Register</Link>
                 </div>
               </form>
             </div>

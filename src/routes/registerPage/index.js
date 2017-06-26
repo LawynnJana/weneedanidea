@@ -1,15 +1,25 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { registerRequest } from './actions'
+import { Link } from 'react-router-dom';
+import { registerUser } from './actions'
+import { toast } from 'react-toastify';
 
 class Register extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      error: false
+    }
+  }
+
+  componentDidMount() {
+
   }
   renderField(field) {
     const { meta: {touched, error} } = field;
     const className = `text-help ${touched && error ? 'has-danger' : ''}`
+
     return (
 
       <div className="form-group">
@@ -23,8 +33,10 @@ class Register extends Component {
             {...field.input}
           />
       </div>
+
         <div className={className}>
           {touched ? error  : ''}
+          {this.props.status.error && field.label === 'E-mail'? 'Please enter a valid e-mail. An account with that e-mail already exists.': ''}
         </div>
       </div>
 
@@ -32,15 +44,23 @@ class Register extends Component {
   }
 
   onSubmit(values){
-    console.log('Login');
-    this.props.registerRequest(values, () => {
-      this.props.history.push('/');
+    this.props.registerUser(values, () => {
+      this.props.history.push('/register/verification');
+    }, () => {
+        this.props.history.push('/register');
     });
-
   }
+
+  greet(){
+    return  <div>Hello {name}</div>;
+  }
+
   render() {
     const { handleSubmit } = this.props;
-
+    // if(this.props.status.error) {
+    //   console.log(this.props.status.error);
+    //   return(<div> Error</div>);
+    // }
     return(
       <div className="row">
         <div className="col-md-12 col-lg-12">
@@ -55,32 +75,32 @@ class Register extends Component {
                   inputType="text"
                   name="firstName"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField}>
+                  component={this.renderField.bind(this)}>
                 </Field>
                 <Field
                   label="Last Name"
                   inputType="text"
                   name="lastName"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField}>
+                  component={this.renderField.bind(this)}>
                 </Field>
                 <Field
                   label="E-mail"
                   inputType="text"
                   name="email"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField}>
+                  component={this.renderField.bind(this)}>
                 </Field>
                 <Field
                   label="Password"
                   inputType="password"
                   name="password"
                   inputClassName="glyphicon glyphicon-lock"
-                  component={this.renderField}>
+                  component={this.renderField.bind(this)}>
                 </Field>
                 <div className="btn-toolbar">
                     <button type="submit" className="btn btn-info">Register</button>
-                    <a className="btn btn-warning pull-right">Register</a>
+                    <Link className="btn btn-warning pull-right" to="/login">Login</Link>
                 </div>
 
               </form>
@@ -108,9 +128,15 @@ function validate(values) {
   return errors;
 }
 
+function mapStateToProps(state){
+  return {
+    status: state.registerStatus
+  }
+}
+
 export default reduxForm({
   validate,
   form: 'registerForm'
 })(
-  connect(null, { registerRequest })(Register)
+  connect(mapStateToProps, { registerUser })(Register)
 );
