@@ -1,0 +1,22 @@
+{
+  "rules": {
+    "AccountHandles": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "Users": {
+      "$uid": {
+        "posts": {
+          ".read": "auth != null",
+          ".indexOn": [
+            "likes"
+          ]
+        },
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid && (!data.exists() || newData.child('creationDate').val() === data.child('creationDate').val())"
+      },
+      ".read": false,
+      ".write": false
+    }
+  }
+}
