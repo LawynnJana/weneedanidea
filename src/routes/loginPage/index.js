@@ -98,9 +98,7 @@ class Login extends Component {
 // Return: {} that contains errors
 function validate(values) {
 
-
   const errors = {};
-
   // Are username and password empty?
   if(!values.username || values.username.length === 0) {
     errors.username = "Enter a username!";
