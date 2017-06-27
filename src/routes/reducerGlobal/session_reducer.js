@@ -1,4 +1,4 @@
-import { LOGIN } from '../loginPage/actions/constants';
+import { LOGIN, LOGIN_ERROR } from '../loginPage/actions/constants';
 import { LOGOUT } from '../homePage/actions/constants'
 const initialState = {
   loggedIn: false
@@ -12,6 +12,13 @@ export default function(state=initialState, action){
         loggedIn: payload.loggedIn,
         username: payload.username,
         status: payload.status
+      }
+      
+    case LOGIN_ERROR:
+      return {
+        error: payload.error,
+        loggedIn: payload.loggedIn,
+        message: payload.message
       }
 
     case LOGOUT:

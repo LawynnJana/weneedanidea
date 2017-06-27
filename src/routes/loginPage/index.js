@@ -9,6 +9,10 @@ class Login extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.loginRequest("resetState");
+  }
+
   //Returns a component for a Field
   renderField(field) {
 
@@ -19,7 +23,6 @@ class Login extends Component {
     // If field was touched and user input isn't satisfied, add has-danger to class
     const className = `text-help ${touched && error ? 'has-danger' : ''}`
     return (
-
       <div className="form-group">
         <div className="input-group">
           <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName}></i></span>
@@ -71,19 +74,21 @@ class Login extends Component {
                   inputType="text"
                   name="username"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField}>
+                  component={this.renderField.bind(this)}>
                 </Field>
                 <Field
                   label="Password"
                   inputType="password"
                   name="password"
                   inputClassName="glyphicon glyphicon-lock"
-                  component={this.renderField}>
+                  component={this.renderField.bind(this)}>
                 </Field>
+                <div className="text-help">{this.props.status.error === true ? this.props.status.message : ''}</div>
                 <div className="btn-toolbar">
                     <button type="submit" className="btn btn-info">Login</button>
                     <Link className="btn btn-warning pull-right" to="/register">Register</Link>
                 </div>
+
               </form>
             </div>
           </div>
@@ -111,9 +116,15 @@ function validate(values) {
   return errors;
 }
 
+function mapStateToProps(state) {
+  return {
+    status: state.loginStatus
+  }
+}
+
 export default reduxForm({
   validate,
   form: 'LoginForm' // Must be unique from other forms in Application
 })(
-  connect(null, { loginRequest })(Login)
+  connect(mapStateToProps, { loginRequest })(Login)
 );
