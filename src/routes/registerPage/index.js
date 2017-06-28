@@ -13,15 +13,11 @@ class Register extends Component {
     }
   }
 
-  componentDidMount() {
-
-  }
   renderField(field) {
     const { meta: {touched, error} } = field;
     const className = `text-help ${touched && error ? 'has-danger' : ''}`
 
     return (
-
       <div className="form-group">
           <label className="control-label" htmlFor={field.name}>{field.label}</label>
           <div className="controls">
@@ -36,18 +32,16 @@ class Register extends Component {
 
         <div className={className}>
           {touched ? error  : ''}
-          {this.props.status.error && field.label === 'E-mail'? 'Please enter a valid e-mail. An account with that e-mail already exists.': ''}
         </div>
       </div>
-
     );
   }
 
   onSubmit(values){
     this.props.registerUser(values, () => {
-      this.props.history.push('/register/verification');
-    }, () => {
-        this.props.history.push('/register');
+      //this.props.login
+      alert("Congratulations on registering, please log in!");
+      this.props.history.push('/login');
     });
   }
 
@@ -75,28 +69,29 @@ class Register extends Component {
                   inputType="text"
                   name="firstName"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField.bind(this)}>
+                  component={this.renderField}>
                 </Field>
                 <Field
                   label="Last Name"
                   inputType="text"
                   name="lastName"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField.bind(this)}>
+                  component={this.renderField}>
                 </Field>
                 <Field
                   label="E-mail"
                   inputType="text"
                   name="email"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField.bind(this)}>
+                  component={this.renderField}>
                 </Field>
+                {this.props.status.error ? 'Please enter a valid e-mail. An account with that e-mail already exists.': ''}
                 <Field
                   label="Password"
                   inputType="password"
                   name="password"
                   inputClassName="glyphicon glyphicon-lock"
-                  component={this.renderField.bind(this)}>
+                  component={this.renderField}>
                 </Field>
                 <div className="btn-toolbar">
                     <button type="submit" className="btn btn-info">Register</button>

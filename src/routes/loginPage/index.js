@@ -24,6 +24,7 @@ class Login extends Component {
     const className = `text-help ${touched && error ? 'has-danger' : ''}`
     return (
       <div className="form-group">
+
         <div className="input-group">
           <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName}></i></span>
           <input
@@ -33,6 +34,7 @@ class Login extends Component {
             aria-describedby="sizing-addon1"
             {...field.input}
           />
+
         </div>
         <div className={className}>
           {touched ? error  : ''}
@@ -67,6 +69,7 @@ class Login extends Component {
             <div className="panel-heading">
               <h3 className="panel-title"><strong>Sign In </strong></h3>
             </div>
+
             <div className="panel-body">
               <form className="form-horizontal col-md-8" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field
@@ -74,14 +77,14 @@ class Login extends Component {
                   inputType="text"
                   name="username"
                   inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField.bind(this)}>
+                  component={this.renderField}>
                 </Field>
                 <Field
                   label="Password"
                   inputType="password"
                   name="password"
                   inputClassName="glyphicon glyphicon-lock"
-                  component={this.renderField.bind(this)}>
+                  component={this.renderField}>
                 </Field>
                 <div className="text-help">{this.props.status.error === true ? this.props.status.message : ''}</div>
                 <div className="btn-toolbar">

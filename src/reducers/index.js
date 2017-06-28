@@ -9,7 +9,7 @@ import loginReducer from '../routes/loginPage/reducers/login_reducer';
 const rootReducer = combineReducers({
   form: formReducer,
   sessionStatus: sessionReducer,
-  user: userReducer,
+  currentUser: userReducer,
   registerStatus: registerReducer,
   loginStatus: loginReducer
 });

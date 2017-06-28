@@ -1,13 +1,23 @@
 import { FETCH_USER, LOGOUT } from './constants';
-import { firebaseAuth } from '../../../reducers/index';
+import { firebaseApp} from '../../../firebase';
 
-export function fetchUser(id){
+export function fetchUser(){
 
   return dispatch => {
-    dispatch({
-      type: FETCH_USER,
-      payload: ''
-    })
+    let currUser;
+    firebaseApp.auth().onAuthStateChanged(function(user) {
+      if(user) {
+        console.log('dispatch fetchUser(): ', user);
+        return dispatch => {
+          dispatch({
+            type: FETCH_USER,
+            payload: user
+          })
+        }
+      } else {
+        console.log("Error @ function fetchUser in hompage/actions/index.js");
+      }
+    });
   }
 }
 

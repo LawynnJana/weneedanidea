@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_ERROR, RESET_LOGIN_STATE } from './constants';
+import { LOGIN, LOGIN_ERROR, LOGIN_SUCC, RESET_LOGIN_STATE } from './constants';
 import firebase from 'firebase'
 import { firebaseApp } from '../../../firebase'
 

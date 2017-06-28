@@ -14,13 +14,6 @@ export default function(state=initialState, action){
         status: payload.status
       }
       
-    case LOGIN_ERROR:
-      return {
-        error: payload.error,
-        loggedIn: payload.loggedIn,
-        message: payload.message
-      }
-
     case LOGOUT:
       return {
         loggedIn: payload.loggedIn

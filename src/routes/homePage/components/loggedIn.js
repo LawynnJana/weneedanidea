@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUser, logOut } from '../actions'
+import { logOut } from '../actions'
 import { withRouter } from 'react-router-dom';
+
 class LoggedIn extends Component {
 
-  componentDidMount() {
-    this.props.fetchUser();
-  }
 
   handleLogout() {
     console.log("Logout");
@@ -16,10 +14,12 @@ class LoggedIn extends Component {
   }
 
   render() {
+    const { user } = this.props;
+    console.log('home user: ', user);
     return(
       <div >
         <div className="page-header">
-            <h1>Hello! {this.props.username}</h1>
+            <h1>Hello! {user.email}</h1>
         </div>
         <button onClick={this.handleLogout.bind(this)} className="btn btn-info">Logout</button>
       </div>
@@ -30,8 +30,8 @@ class LoggedIn extends Component {
 
 function mapStateToProps(state){
   return {
-    user: state.user
+
   }
 }
 
-export default withRouter(connect(mapStateToProps, { fetchUser, logOut })(LoggedIn));
+export default withRouter(connect(mapStateToProps, { logOut })(LoggedIn));
