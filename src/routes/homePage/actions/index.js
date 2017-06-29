@@ -1,28 +1,26 @@
 import { FETCH_USER, LOGOUT } from './constants';
 import { firebaseApp} from '../../../firebase';
 
-export function fetchUser(){
-
+export function fetchUser(uid){
   return dispatch => {
-    let currUser;
-    firebaseApp.auth().onAuthStateChanged(function(user) {
-      if(user) {
-        console.log('dispatch fetchUser(): ', user);
-        return dispatch => {
-          dispatch({
-            type: FETCH_USER,
-            payload: user
-          })
-        }
-      } else {
-        console.log("Error @ function fetchUser in hompage/actions/index.js");
-      }
+    firebaseApp.database().ref('Users/'+uid).once("value").
+    then((snapshot) => {
+      dispatch({
+        type: FETCH_USER,
+        payload: snapshot.val()
+      });
     });
   }
 }
 
+
 export function logOut(cb){
   return dispatch => {
+    firebaseApp.auth().signOut().then(()=>{
+      console.log("Signed out.");
+    }, (error) => {
+      console.log("Error signing out: ", error);
+    })
     cb();
     dispatch({
       type: LOGOUT,
@@ -32,4 +30,8 @@ export function logOut(cb){
     })
 
   }
+}
+
+export function createPost(){
+  
 }

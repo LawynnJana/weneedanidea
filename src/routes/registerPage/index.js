@@ -19,16 +19,16 @@ class Register extends Component {
 
     return (
       <div className="form-group">
-          <label className="control-label" htmlFor={field.name}>{field.label}</label>
-          <div className="controls">
-        <input
-            type={field.inputType}
-            id={field.name}
-            className="form-control"
-            placeholder={field.label}
-            {...field.input}
-          />
-      </div>
+        <label className="control-label" htmlFor={field.name}>{field.label}</label>
+        <div className="controls">
+          <input
+          type={field.inputType}
+          id={field.name}
+          className="form-control"
+          placeholder={field.label}
+          {...field.input}
+        />
+        </div>
 
         <div className={className}>
           {touched ? error  : ''}
@@ -39,9 +39,7 @@ class Register extends Component {
 
   onSubmit(values){
     this.props.registerUser(values, () => {
-      //this.props.login
-      alert("Congratulations on registering, please log in!");
-      this.props.history.push('/login');
+      this.props.history.push('/');
     });
   }
 
@@ -64,6 +62,13 @@ class Register extends Component {
             </div>
             <div className="panel-body">
               <form className="form-horizontal col-md-8" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <Field
+                  label="Username"
+                  inputType="text"
+                  name="username"
+                  inputClassName="glyphicon glyphicon-user"
+                  component={this.renderField}>
+                </Field>
                 <Field
                   label="First Name"
                   inputType="text"
@@ -93,6 +98,13 @@ class Register extends Component {
                   inputClassName="glyphicon glyphicon-lock"
                   component={this.renderField}>
                 </Field>
+                <Field
+                  label="Re-enter Password"
+                  inputType="password"
+                  name="passwordReentered"
+                  inputClassName="glyphicon glyphicon-lock"
+                  component={this.renderField}>
+                </Field>
                 <div className="btn-toolbar">
                     <button type="submit" className="btn btn-info">Register</button>
                     <Link className="btn btn-warning pull-right" to="/login">Login</Link>
@@ -110,6 +122,9 @@ class Register extends Component {
 function validate(values) {
   const errors = {};
   //validate the inputs from 'values'
+  if(!values.username) {
+    errors.username = "Enter a username!";
+  }
   if(!values.firstName || values.firstName.length === 0) {
     errors.firstName = "Enter a first name!";
   }
@@ -118,6 +133,9 @@ function validate(values) {
   }
   if(!values.password || values.password.length === 0) {
     errors.password = "Enter a password!";
+  }
+  if(values.password !== values.passwordReentered){
+    errors.passwordReentered = "The passwords do not match!"
   }
 
   return errors;

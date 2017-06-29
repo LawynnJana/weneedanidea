@@ -13,7 +13,7 @@ export default function(state=initialState, action){
         username: payload.username,
         status: payload.status
       }
-      
+
     case LOGOUT:
       return {
         loggedIn: payload.loggedIn

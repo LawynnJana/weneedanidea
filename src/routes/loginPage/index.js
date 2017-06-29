@@ -10,6 +10,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    // reset error state for when user goes back (erases the error messages)
     this.props.loginRequest("resetState");
   }
 

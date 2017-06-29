@@ -31,16 +31,7 @@ export default class VerifyPage extends Component {
   render() {
     return (
       <div>
-
         <div>We notice that you are not verified! An e-mail has been sent to your e-mail address for verification!</div>
-        <form className="form-horizontal">
-          <div className="form-group">
-            <label className="control-label">Code:</label>
-            <div className="controls">
-              <input type="text" className="form-control"/>
-            </div>
-          </div>
-        </form>
       </div>
     );
   }
