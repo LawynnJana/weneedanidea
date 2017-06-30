@@ -64,7 +64,7 @@ ReactDOM.render(
           <Route path="/login" component={LoginPage} onEnter={isAuthenticated()}/>
           <Route path="/verification" component={VerifyPage} onEnter={isAuthenticated()} />
           <Route path="/register" component={RegisterPage} onEnter={isAuthenticated()} />
-          <Route path="/" component={Home} onEnter={isNotLoggedIn()}/>
+          <Route exact path="/" component={Home} onEnter={isNotLoggedIn()}/>
         </Switch>
       </div>
     </BrowserRouter>

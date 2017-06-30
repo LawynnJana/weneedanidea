@@ -25,7 +25,7 @@ class LoggedIn extends Component {
             </div>
             <div className="panel-body">
               <MyPosts/>
-              <Link className="btn btn-info" to="/posts/new">Create Post</Link>
+              <Link className="btn btn-info" to="posts/new">Create Post</Link>
             </div>
             <button onClick={this.handleLogout.bind(this)} className="btn btn-info">Logout</button>
           </div>

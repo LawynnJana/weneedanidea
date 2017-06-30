@@ -21,10 +21,11 @@ class Home extends Component {
           this.props.history.push('verification');
         }
         else {
-          //console.log('fetching user...', user);
+          console.log('index.js in homepage fetching user', user);
           this.props.fetchUser(user.uid);
         }
       } else {
+        console.log("index.js in hompage not logged in")
         this.props.history.push('login');
       }
     });
