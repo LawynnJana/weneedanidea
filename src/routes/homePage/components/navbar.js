@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 
 class NavBar extends Component {
@@ -28,8 +28,8 @@ class NavBar extends Component {
           </div>
           <div className="collapse navbar-collapse" id="navbar-collapse-3">
             <ul className="nav navbar-nav navbar-right">
-              <li><Link to="/user/posts">Show Posts</Link></li>
-              <li><Link to="/user/profile">Profile</Link></li>
+              <li><Link to="/user/posts">My Posts</Link></li>
+              <li><Link to="/profile">Profile</Link></li>
               <li>
                 <a className="btn btn-default btn-outline btn-circle collapsed"  data-toggle="collapse" href="#nav-collapse3" aria-expanded="false" aria-controls="nav-collapse3">Search</a>
               </li>
@@ -49,4 +49,4 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+export default withRouter(NavBar);

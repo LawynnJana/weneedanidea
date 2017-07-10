@@ -51,10 +51,13 @@ class User extends Component {
     return (
       <div>
         <NavBar/>
-
+        <Link to="/profile">go to profile</Link>
         <Switch>
-          <Route exact path="/" render={() => <Home user={this.props.currentUser} {...this.props}/>}/>
-          <Route path="/user/profile" render={() => <UserProfile/>} />
+          <Route
+            path="/profile"
+            render={() => <UserProfile/>} />
+          <Route path="/user/posts" component={PostsShow} />
+          <Route path="/" render={() => <Home user={this.props.currentUser} {...this.props}/>} />
         </Switch>
 
       </div>
