@@ -36,7 +36,7 @@ export function loginRequest(values, callback) {
         })
 
         // Redirect to user's home page on success
-        callback();
+        callback(); //issue here
 
       }).catch((error) => {
         console.log("Login ERROR  Error code: ", error.code, " error message: ", error.message, " end of err.");

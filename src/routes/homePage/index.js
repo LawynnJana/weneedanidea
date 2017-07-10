@@ -1,82 +1,62 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import LoggedIn from './components/loggedIn';
 import { firebaseApp } from '../../firebase';
 import { fetchUser } from './actions'
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
 
+import NavBar from './components/navbar';
+import Home from './components/home';
 import PostsShow from './components/postsShow';
 import PostsNew from './components/postsNew';
-class Home extends Component {
+import UserProfile from './components/profile';
+import UserHandle from './components/userHandle';
+
+
+
+class User extends Component {
 
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
-    firebaseApp.auth().onAuthStateChanged( user => {
-      if (user) {
-        if(!user.emailVerified){
-          this.props.history.push('verification');
-        }
-        else {
-          console.log('index.js in homepage fetching user', user);
-          this.props.fetchUser(user.uid);
-        }
-      } else {
-        console.log("index.js in hompage not logged in")
-        this.props.history.push('login');
+  componentWillMount() {
+    const user = firebaseApp.auth().currentUser;
+    if (user) {
+      if(!user.emailVerified){
+        console.log('Not verified, redirect to verification!');
+        this.props.history.push('verification');
       }
-    });
+      else {
+        console.log('Verified, fetching user!', user);
+        if(user.displayName === null){
+          console.log("Displayname not set, push('user/accounthandle')")
+          this.props.history.push('user/accounthandle')
+        }
+        this.props.fetchUser(user.uid);
+        //if fetchUser is null, prompt user to fill out account handle
+      }
+    }
+    else if(!user) {
+      console.log("Not logged in, redirect to login!")
+      this.props.history.push('login');
+    }
   }
 
-  handleSubmit(event){
-    event.preventDefault();
-  }
   render() {
     //component doesnt rerender
-    console.log('app:', this.props.currentUser);
-
     if(_.isEmpty(this.props.currentUser)){
-      return (<div>Loading...</div>);
+      return (<div>Loading</div>);
     }
     return (
       <div>
-       <nav className="navbar navbar-inverse">
-         <div className="container-fluid">
+        <NavBar/>
 
-           <div className="navbar-header">
-             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-3">
-               <span className="sr-only">Toggle navigation</span>
-               <span className="icon-bar"></span>
-               <span className="icon-bar"></span>
-               <span className="icon-bar"></span>
-             </button>
-             <a className="navbar-brand" href="#">WeNeedAnIdea</a>
-           </div>
-           <div className="collapse navbar-collapse" id="navbar-collapse-3">
-             <ul className="nav navbar-nav navbar-right">
-               <li><a href="#">Home</a></li>
-               <li><a href="#">Posts</a></li>
-               <li><a href="#">My Posts</a></li>
-               <li><a href="#">Profile</a></li>
-               <li>
-                 <a className="btn btn-default btn-outline btn-circle collapsed"  data-toggle="collapse" href="#nav-collapse3" aria-expanded="false" aria-controls="nav-collapse3">Search</a>
-               </li>
-             </ul>
-             <div className="collapse nav navbar-nav nav-collapse slide-down" id="nav-collapse3">
-               <form className="navbar-form navbar-right" role="search" onSubmit={this.handleSubmit}>
-                 <div className="form-group">
-                   <input type="text" className="form-control" placeholder="Search" />
-                 </div>
-                 <button type="submit" className="btn btn-danger"><span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-               </form>
-             </div>
-           </div>
-         </div>
-       </nav>
-        <LoggedIn user={this.props.currentUser}/>
+        <Switch>
+          <Route exact path="/" render={() => <Home user={this.props.currentUser} {...this.props}/>}/>
+          <Route path="/user/profile" render={() => <UserProfile/>} />
+        </Switch>
+
       </div>
     );
   }
@@ -84,8 +64,9 @@ class Home extends Component {
 
 function mapStateToProps(state){
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    registered: state.registerStatus.registered
   }
 }
 
-export default connect(mapStateToProps, { fetchUser })(Home);
+export default withRouter(connect(mapStateToProps, { fetchUser })(User));

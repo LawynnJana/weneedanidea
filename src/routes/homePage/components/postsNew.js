@@ -1,20 +1,13 @@
-// import React from 'react';
-//
-// const PostsNew = () => {
-//   return (<div>new post</div>);
-// }
-//
-// export default PostsNew;
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createPost } from '../actions';
 
 class PostsNew extends Component {
 
   componentDidMount() {
-    console.log("New post component did mount");
+    console.log("postsNew.js mounted");
   }
   renderField(field) {
 
@@ -41,9 +34,8 @@ class PostsNew extends Component {
     this.props.createPost(values, () => {
       this.props.history.push('/');
     });
-
-
   }
+  
   render() {
     //passed by redux-form
     const { handleSubmit } = this.props;
@@ -95,9 +87,9 @@ function validate(values) {
   return errors;
 }
 
-export default reduxForm({
+export default withRouter(reduxForm({
   validate,
   form: 'PostsNewForm'
 })(
   connect(null, { createPost })(PostsNew)
-);
+));

@@ -1,7 +1,11 @@
 import React from 'react';
 
 const PostsShow = () => {
-  return(<div> My Posts! </div>);
+  return(
+    <div>
+      Show posts
+    </div>
+  );
 }
 
 export default PostsShow;

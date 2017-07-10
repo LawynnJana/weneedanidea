@@ -1,15 +1,23 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { registerUser } from './actions'
 import { toast } from 'react-toastify';
+import { firebaseApp } from '../../firebase';
 
 class Register extends Component {
   constructor(props){
     super(props);
     this.state = {
       error: false
+    }
+  }
+
+  componentWillMount() {
+    if(firebaseApp.auth().currentUser){
+      console.log("Logged in");
+      this.props.history.push('/');
     }
   }
 
@@ -39,20 +47,12 @@ class Register extends Component {
 
   onSubmit(values){
     this.props.registerUser(values, () => {
-      this.props.history.push('/');
+      this.props.history.push('login');
     });
-  }
-
-  greet(){
-    return  <div>Hello {name}</div>;
   }
 
   render() {
     const { handleSubmit } = this.props;
-    // if(this.props.status.error) {
-    //   console.log(this.props.status.error);
-    //   return(<div> Error</div>);
-    // }
     return(
       <div className="row">
         <div className="col-md-12 col-lg-12">
@@ -62,27 +62,6 @@ class Register extends Component {
             </div>
             <div className="panel-body">
               <form className="form-horizontal col-md-8" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <Field
-                  label="Username"
-                  inputType="text"
-                  name="username"
-                  inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField}>
-                </Field>
-                <Field
-                  label="First Name"
-                  inputType="text"
-                  name="firstName"
-                  inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField}>
-                </Field>
-                <Field
-                  label="Last Name"
-                  inputType="text"
-                  name="lastName"
-                  inputClassName="glyphicon glyphicon-user"
-                  component={this.renderField}>
-                </Field>
                 <Field
                   label="E-mail"
                   inputType="text"
@@ -122,12 +101,6 @@ class Register extends Component {
 function validate(values) {
   const errors = {};
   //validate the inputs from 'values'
-  if(!values.username) {
-    errors.username = "Enter a username!";
-  }
-  if(!values.firstName || values.firstName.length === 0) {
-    errors.firstName = "Enter a first name!";
-  }
   if(!values.email || values.email.length === 0 || !values.email.includes("@")) {
     errors.email= "Enter a valid e-mail!";
   }
@@ -147,9 +120,9 @@ function mapStateToProps(state){
   }
 }
 
-export default reduxForm({
+export default withRouter(reduxForm({
   validate,
   form: 'registerForm'
 })(
   connect(mapStateToProps, { registerUser })(Register)
-);
+));

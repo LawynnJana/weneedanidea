@@ -6,6 +6,7 @@ const initialState = {
 export default function(state=initialState, action){
   switch(action.type){
     case REGISTER_SUCCESS:
+      console.log("Register succes!");
       return {
         verified: false,
         registered: true,

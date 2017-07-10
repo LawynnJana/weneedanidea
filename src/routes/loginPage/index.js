@@ -1,17 +1,27 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { loginRequest } from './actions'
+import { firebaseApp } from '../../firebase';
 
 class Login extends Component {
   constructor(props){
     super(props);
   }
 
+  componentWillMount(){
+    firebaseApp.auth().onAuthStateChanged( user => {
+      if (user) {
+        this.props.history.replace('/');
+      }
+    });
+  }
+
   componentDidMount() {
     // reset error state for when user goes back (erases the error messages)
     this.props.loginRequest("resetState");
+
   }
 
   //Returns a component for a Field
@@ -126,9 +136,9 @@ function mapStateToProps(state) {
   }
 }
 
-export default reduxForm({
+export default withRouter(reduxForm({
   validate,
   form: 'LoginForm' // Must be unique from other forms in Application
 })(
   connect(mapStateToProps, { loginRequest })(Login)
-);
+));
