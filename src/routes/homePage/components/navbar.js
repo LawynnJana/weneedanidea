@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logOut } from '../actions';
+
 
 
 class NavBar extends Component {
   constructor(props){
     super(props)
   }
-  componentDidMount(){
 
+  handleLogout() {
+    console.log("Logging out");
+    this.props.logOut(() => {
+      this.props.history.push('login');
+    });
   }
 
   handleSubmit(event){
     event.preventDefault();
   }
+  
   render() {
     return(
       <nav className="navbar navbar-inverse">
@@ -30,6 +38,7 @@ class NavBar extends Component {
             <ul className="nav navbar-nav navbar-right">
               <li><Link to="/user/posts">My Posts</Link></li>
               <li><Link to="/profile">Profile</Link></li>
+              <li><button onClick={this.handleLogout.bind(this)} className="btn btn-info">Logout</button></li>
               <li>
                 <a className="btn btn-default btn-outline btn-circle collapsed"  data-toggle="collapse" href="#nav-collapse3" aria-expanded="false" aria-controls="nav-collapse3">Search</a>
               </li>
@@ -49,4 +58,4 @@ class NavBar extends Component {
   }
 }
 
-export default withRouter(NavBar);
+export default withRouter(connect(null, { logOut })(NavBar));
