@@ -3,12 +3,15 @@ import { firebaseApp } from '../../../firebase';
 
 export function fetchUser(uid){
   return dispatch => {
+    const email = firebaseApp.auth().currentUser.email;
     firebaseApp.database().ref('Users/'+uid).once("value").
     then((snapshot) => {
       console.log('fetched!', snapshot.val());
+      let tempUsr = snapshot.val();
+      const temp = Object.assign({email}, ...snapshot.val());
       dispatch({
         type: FETCH_USER,
-        payload: snapshot.val()
+        payload: temp
       });
     });
   }

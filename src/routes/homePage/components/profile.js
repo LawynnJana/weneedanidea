@@ -8,7 +8,15 @@ class Profile extends Component {
   }
 
   render() {
-    return (<div> Profile </div>);
+    const { user } = this.props;
+    console.log(this.props.user);
+    return (
+      <div>
+        <h1>Profile</h1>
+        <h2>{ user.accountHandle }</h2>
+        <i className="glyphicon glyphicon-envelope"></i> {user.email}
+
+    </div>);
   }
 }
 
