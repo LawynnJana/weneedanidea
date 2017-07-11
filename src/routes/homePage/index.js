@@ -34,6 +34,7 @@ class User extends Component {
           this.props.history.push('user/accounthandle')
         }
         this.props.fetchUser(user.uid);
+        console.log("user: ", user);
         //if fetchUser is null, prompt user to fill out account handle
       }
     }

@@ -3,12 +3,13 @@ import { firebaseApp } from '../../../firebase';
 
 export function fetchUser(uid){
   return dispatch => {
-    const email = firebaseApp.auth().currentUser.email;
+    const user = firebaseApp.auth().currentUser;
+    const email = user.email;
+    const photoURL = user.photoURL;
+
     firebaseApp.database().ref('Users/'+uid).once("value").
     then((snapshot) => {
-      console.log('fetched!', snapshot.val());
-      let tempUsr = snapshot.val();
-      const temp = Object.assign({email}, ...snapshot.val());
+      const temp = Object.assign({email, photoURL}, snapshot.val());
       dispatch({
         type: FETCH_USER,
         payload: temp
@@ -28,10 +29,10 @@ function addToUserDB(accountHandle, ref){
   })
 }
 
-
 function addAccHandleToDb(accountHandle, userRef){
   userRef.set(accountHandle)
 }
+
 export function submitUserHandle( { accountHandle } , callback){
   return dispatch => {
     //addUser(values, firebaseApp.database().ref('Users/'+uid));
@@ -47,15 +48,21 @@ export function submitUserHandle( { accountHandle } , callback){
         addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle));
         addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
 
-        user.updateProfile({
-          displayName: accountHandle
-        }).then(() => {
-          console.log("Success setting account handle")
+        // Get default profile picture
+        firebaseApp.storage().ref().child('images/default_profile_img.png').getDownloadURL().then((url) => {
+          console.log("photo url added");
+          console.log(url);
 
-          callback();
-        },
-          (error) => {console.log("Failure setting account handle")});
-
+          // update firebase user
+          user.updateProfile({
+            displayName: accountHandle,
+            photoURL: url
+          }).then(() => {
+            console.log("Success setting account handle")
+            callback();
+          },
+            (error) => {console.log("Failure setting account handle")});
+        })
       }
     }).catch((err) => {
       console.log('Error when submitting user handle: ', err)
