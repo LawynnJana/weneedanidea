@@ -308,4 +308,10 @@ Follow me on Twitter @maridlcrmn
 }
 
 .card .bottom .btn{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
+
+.card img.edit-profile-pic:hover{
+  cursor: pointer;
+  border: solid 5px #A5DBEB;
+
+}
 /*END of PROFILEPAGE*/

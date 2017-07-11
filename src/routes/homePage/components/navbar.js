@@ -13,7 +13,7 @@ class NavBar extends Component {
   handleLogout() {
     console.log("Logging out");
     this.props.logOut(() => {
-      this.props.history.push('login');
+      this.props.history.push('/login');
     });
   }
 
