@@ -49,8 +49,7 @@ const NonEditable = props => {
   );
 }
 
-//Returns a component for a Field
-const renderField = (field) => {
+const renderField = field => {
   // touched is an indicator if the field was ever clicked on
   // error is true if validate() returned errors
   const { meta: {touched, error} } = field;
@@ -79,100 +78,98 @@ const renderField = (field) => {
   );
 }
 
+const FileInput = ({
+  photoURL,
+  input: {
+    value: omitValue,
+    ...inputProps,
+  },
+  meta: omitMeta,
+  ...props,
+}) => {
 
-class DropImg extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      files: []
-    }
-  }
-  onDrop(files) {
-   this.setState({
-     files
-   });
- }
-
- render() {
-   return (
-     <section >
-       <div className="dropzone">
-         <Dropzone
-           accept="image/jpeg, image/png"
-           maxSize="1"
-           onDrop={this.onDrop.bind(this)}>
-           <p>Drop a profile picture here! (.jpg or .png)</p>
-         </Dropzone>
-       </div>
-       <div>
-         <h2>Dropped File</h2>
-         <ul>
-           {
-             this.state.files.map(f => <li>{f.name} - {f.size} bytes</li>)
-           }
-         </ul>
-       </div>
-     </section>
-   );
- }
-}
-
-const ProfilePicture = field => {
-  function changeDisplay(){
+  function onImageClick(){
     $('#myInput').click();
+    //change redux photoUrl state
   }
-  return (
+
+  function onImageUpload(e){
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      //call action
+      let imageSrc = reader.result
+      console.log("Image source:", imageSrc)
+      console.log("file: ",file)
+      //this.props.changePicture(file, imageSrc)
+    }
+    reader.readAsDataURL(file);
+  }
+
+  return  (
     <div>
-      <div>
-        <input  accept="image/jpeg, image/png" id="myInput" type="file" style={{visibility: 'hidden', position: 'absolute'}} {...field.input} />
-        <img alt="" className="edit-profile-pic" onClick={changeDisplay} src={field.photoURL}/>
-      </div>
-    </div>
-  )
+      <input
+      id="myInput"
+      style={{visibility: 'hidden', position: 'absolute'}}
+      type="file"
+      {...inputProps}
+      {...props}
+      accept="image/png, image/jpg, image/jpeg"
+      onChange={onImageUpload}
+      />
+    <img alt="" className="edit-profile-pic" onClick={onImageClick} src={photoURL}/>
+  </div>)
 }
 
+class Editable extends Component {
+  constructor(props){
+    super(props)
 
-
-const Editable = props => {
-  const { user, onclick } = props;
-  console.log("user",user);
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="card hovercard">
-            <div className="cardheader" style={{background: '#fff5f1'}}>
-              <button onClick={onclick} className="btn btn-info">Edit Profile</button>
-            </div>
-            <form>
-
-                <div className="row avatar">
-                  <Field
-                    photoURL={user.photoURL}
-                    name="profilePic"
-                    component={ProfilePicture}
-                  />
-                </div>
-                <div className="info">
-                  <div className="title">
+  }
+  render(){
+    const { user, onclick } = this.props;
+    console.log("user",user);
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="card hovercard">
+              <div className="cardheader" style={{background: '#fff5f1'}}>
+                <button onClick={onclick} className="btn btn-info">Edit Profile</button>
+              </div>
+              <form>
+                  <div className="row avatar">
                     <Field
-                      label={user.accountHandle}
-                      inputType="text"
-                      name="accountHandle"
-                      inputClassName="glyphicon glyphicon-user"
-                      component={renderField} />
+                      name="profile_pic"
+                      photoURL={user.photoURL}
+                      component={FileInput}
+                      type="file"
+                    />
                   </div>
-                  <div className="desc"></div>
-                  <div className="desc"></div>
-                  <div className="desc"></div>
-                </div>
-            </form>
+                  <div className="info">
+                    <div className="title">
+                      <Field
+                        label={user.accountHandle}
+                        inputType="text"
+                        name="accountHandle"
+                        inputClassName="glyphicon glyphicon-user"
+                        component={renderField} />
+                    </div>
+                    <div className="desc"></div>
+                    <div className="desc"></div>
+                    <div className="desc"></div>
+                  </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
 }
+
 class Profile extends Component {
   constructor(props){
     super(props)
@@ -181,6 +178,7 @@ class Profile extends Component {
     }
     this.editProfile = this.editProfile.bind(this);
   }
+
   componentWillMount(){
     console.log("Profile.js mounted");
     //this.props.fetchUser(user.uid);
@@ -204,7 +202,6 @@ class Profile extends Component {
     })
   }
   render() {
-
     return (<div>
       {
         this.state.edit ?
@@ -218,7 +215,7 @@ class Profile extends Component {
 
 function validate(values){
   const errors = {};
-
+  console.log("Validate:" ,values.profile_pic)
   return errors;
 
 }
