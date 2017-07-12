@@ -18,30 +18,35 @@ class User extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      loading: true
+    }
   }
 
   componentWillMount() {
-    const user = firebaseApp.auth().currentUser;
-    if (user) {
-      if(!user.emailVerified){
-        console.log('Not verified, redirect to verification!');
-        this.props.history.push('verification');
-      }
-      else {
-        console.log('Verified, fetching user!', user);
-        if(user.displayName === null){
-          console.log("Displayname not set, push('user/accounthandle')")
-          this.props.history.push('user/accounthandle')
+    firebaseApp.auth().onAuthStateChanged((user)=>{
+      if (user) {
+        if(!user.emailVerified){
+          console.log('Not verified, redirect to verification!');
+          this.props.history.push('verification');
         }
-        this.props.fetchUser(user.uid);
-        console.log("user: ", user);
-        //if fetchUser is null, prompt user to fill out account handle
+        else {
+          console.log('Verified, fetching user!', user);
+          if(user.displayName === null){
+            console.log("Displayname not set, push('user/accounthandle')")
+            this.props.history.push('user/accounthandle')
+          }
+          this.props.fetchUser(user.uid);
+          console.log("user: ", user);
+          //if fetchUser is null, prompt user to fill out account handle
+        }
+
       }
-    }
-    else if(!user) {
-      console.log("Not logged in, redirect to login!")
-      this.props.history.push('login');
-    }
+      else if(!user) {
+        console.log("Not logged in, redirect to login!")
+        this.props.history.push('login');
+      }
+    });
   }
 
   render() {

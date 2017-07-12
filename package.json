@@ -29,6 +29,7 @@
     "react": "^15.5.4",
     "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.5.4",
+    "react-dropzone": "^3.13.3",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",

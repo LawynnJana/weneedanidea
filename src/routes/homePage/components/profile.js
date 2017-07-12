@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { firebaseApp } from '../../../firebase';
 import { Field, reduxForm } from 'redux-form';
+import Dropzone from 'react-dropzone';
+
 
 const NonEditable = props => {
   const { user, onclick } = props;
@@ -49,7 +51,6 @@ const NonEditable = props => {
 
 //Returns a component for a Field
 const renderField = (field) => {
-
   // touched is an indicator if the field was ever clicked on
   // error is true if validate() returned errors
   const { meta: {touched, error} } = field;
@@ -78,10 +79,59 @@ const renderField = (field) => {
   );
 }
 
-function changeDisplay(){
-  //
-  alert("Choose an image");
+
+class DropImg extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      files: []
+    }
+  }
+  onDrop(files) {
+   this.setState({
+     files
+   });
+ }
+
+ render() {
+   return (
+     <section >
+       <div className="dropzone">
+         <Dropzone
+           accept="image/jpeg, image/png"
+           maxSize="1"
+           onDrop={this.onDrop.bind(this)}>
+           <p>Drop a profile picture here! (.jpg or .png)</p>
+         </Dropzone>
+       </div>
+       <div>
+         <h2>Dropped File</h2>
+         <ul>
+           {
+             this.state.files.map(f => <li>{f.name} - {f.size} bytes</li>)
+           }
+         </ul>
+       </div>
+     </section>
+   );
+ }
 }
+
+const ProfilePicture = field => {
+  function changeDisplay(){
+    $('#myInput').click();
+  }
+  return (
+    <div>
+      <div>
+        <input  accept="image/jpeg, image/png" id="myInput" type="file" style={{visibility: 'hidden', position: 'absolute'}} {...field.input} />
+        <img alt="" className="edit-profile-pic" onClick={changeDisplay} src={field.photoURL}/>
+      </div>
+    </div>
+  )
+}
+
+
 
 const Editable = props => {
   const { user, onclick } = props;
@@ -95,23 +145,27 @@ const Editable = props => {
               <button onClick={onclick} className="btn btn-info">Edit Profile</button>
             </div>
             <form>
-              <div className="avatar">
-                  <img alt="" className="edit-profile-pic" onClick={changeDisplay} src={user.photoURL}/>
-              </div>
-              <div className="info">
-                <div className="title">
+
+                <div className="row avatar">
                   <Field
-                    label={user.accountHandle}
-                    inputType="text"
-                    name="accountHandle"
-                    inputClassName="glyphicon glyphicon-user"
-                    component={renderField}>
-                  </Field>
+                    photoURL={user.photoURL}
+                    name="profilePic"
+                    component={ProfilePicture}
+                  />
                 </div>
-                <div className="desc"></div>
-                <div className="desc"></div>
-                <div className="desc"></div>
-              </div>
+                <div className="info">
+                  <div className="title">
+                    <Field
+                      label={user.accountHandle}
+                      inputType="text"
+                      name="accountHandle"
+                      inputClassName="glyphicon glyphicon-user"
+                      component={renderField} />
+                  </div>
+                  <div className="desc"></div>
+                  <div className="desc"></div>
+                  <div className="desc"></div>
+                </div>
             </form>
           </div>
         </div>
@@ -129,6 +183,7 @@ class Profile extends Component {
   }
   componentWillMount(){
     console.log("Profile.js mounted");
+    //this.props.fetchUser(user.uid);
     this.setState({
       edit: false
     })
