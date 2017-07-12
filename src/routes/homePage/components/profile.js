@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { firebaseApp } from '../../../firebase';
 import { Field, reduxForm } from 'redux-form';
 import Dropzone from 'react-dropzone';
-
+import { submitProfileChanges } from '../actions';
 
 const NonEditable = props => {
   const { user, onclick } = props;
@@ -50,15 +51,10 @@ const NonEditable = props => {
 }
 
 const renderField = field => {
-  // touched is an indicator if the field was ever clicked on
-  // error is true if validate() returned errors
   const { meta: {touched, error} } = field;
-
-  // If field was touched and user input isn't satisfied, add has-danger to class
   const className = `text-help ${touched && error ? 'has-danger' : ''}`
   return (
     <div className="form-group col-xs-8 col-sm-4 col-sm-offset-4 col-xs-offset-2">
-
       <div className="input-group">
         <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName}></i></span>
         <input
@@ -68,7 +64,6 @@ const renderField = field => {
           aria-describedby="sizing-addon1"
           {...field.input}
         />
-
       </div>
       <div className={className}>
         {touched ? error  : ''}
@@ -125,9 +120,13 @@ const FileInput = ({
 class Editable extends Component {
   constructor(props){
     super(props)
-
   }
+  handleProfileSubmit(values){
+    this.props.submitProfileChanges(values);
+  }
+
   render(){
+
     const { user, onclick } = this.props;
     console.log("user",user);
     return (
@@ -138,7 +137,7 @@ class Editable extends Component {
               <div className="cardheader" style={{background: '#fff5f1'}}>
                 <button onClick={onclick} className="btn btn-info">Edit Profile</button>
               </div>
-              <form>
+              <form >
                   <div className="row avatar">
                     <Field
                       name="profile_pic"
@@ -152,7 +151,7 @@ class Editable extends Component {
                       <Field
                         label={user.accountHandle}
                         inputType="text"
-                        name="accountHandle"
+                        name="account_handle"
                         inputClassName="glyphicon glyphicon-user"
                         component={renderField} />
                     </div>
@@ -167,7 +166,6 @@ class Editable extends Component {
       </div>
     );
   }
-
 }
 
 class Profile extends Component {

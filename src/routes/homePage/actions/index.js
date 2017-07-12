@@ -1,4 +1,4 @@
-import { FETCH_USER, LOGOUT, SET_USR_HANDLE } from './constants';
+import { FETCH_USER, LOGOUT, SET_USR_HANDLE, PROFILE_EDIT } from './constants';
 import { firebaseApp } from '../../../firebase';
 
 export function fetchUser(uid){
@@ -49,6 +49,7 @@ export function submitUserHandle( { accountHandle } , callback){
         addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
 
         // Get default profile picture
+
         firebaseApp.storage().ref().child('images/default_profile_img.png').getDownloadURL().then((url) => {
           console.log("photo url added");
           console.log(url);
@@ -61,7 +62,8 @@ export function submitUserHandle( { accountHandle } , callback){
             console.log("Success setting account handle")
             callback();
           },
-            (error) => {console.log("Failure setting account handle")});
+            (error) => {console.log("Failure setting account handle")}
+          );
         })
       }
     }).catch((err) => {
@@ -90,6 +92,22 @@ export function logOut(cb){
       }
     })
     cb();
+  }
+}
+
+export function submitProfileChanges({accontHandle, img_src}){
+  return dispatch => {
+    const user = firebaseApp.auth().currentUser;
+    user.updateProfile({
+      displayName: accountHandle,
+      photoURL: img_src
+    }).then(() => {
+      console.log("Success updating profile")
+      //update user
+      fetchUser(user.uid);
+    },
+      (error) => {console.log("Failure updating profile")}
+    );
   }
 }
 
