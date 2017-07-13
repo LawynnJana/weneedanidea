@@ -41,18 +41,26 @@ class UserHandle extends Component {
   render() {
     const { handleSubmit } = this.props;
     return (
-      <div>
-        <h1>You do not have a user handle yet, please enter on in before continuing!</h1>
-        <form className="form-horizontal" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-          <Field
-            label="AccountHandle"
-            name="accountHandle"
-            component={this.renderField}>
-          </Field>
-          <div className="btn-toolbar">
-            <button type="submit" className="btn btn-info">Submit</button>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="panel panel-info">
+            <div className="panel-heading">
+              <h1 className="panel-title">You do not have a user handle yet, please enter on in before continuing!</h1>
+            </div>
+            <div className="panel-body">
+              <form className="form-horizontal col-md-10" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <Field
+                  label="AccountHandle"
+                  name="accountHandle"
+                  component={this.renderField}>
+                </Field>
+                <div className="btn-toolbar">
+                  <button type="submit" className="btn btn-info">Submit</button>
+                </div>
+              </form>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     );
   }

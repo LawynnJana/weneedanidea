@@ -6,7 +6,7 @@ export function fetchUser(uid){
     const user = firebaseApp.auth().currentUser;
     const email = user.email;
     const photoURL = user.photoURL;
-
+    console.log("fetch user");
     firebaseApp.database().ref('Users/'+uid).once("value").
     then((snapshot) => {
       const temp = Object.assign({email, photoURL}, snapshot.val());
@@ -14,6 +14,7 @@ export function fetchUser(uid){
         type: FETCH_USER,
         payload: temp
       });
+
     });
   }
 }
@@ -35,9 +36,9 @@ function addAccHandleToDb(accountHandle, userRef){
 
 export function submitUserHandle( { accountHandle } , callback){
   return dispatch => {
-    //addUser(values, firebaseApp.database().ref('Users/'+uid));
     const user = firebaseApp.auth().currentUser;
-    firebaseApp.database().ref('AccountHandles/'+accountHandle).once("value")
+
+    firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")
     .then((snapshot) => {
       const exist = (snapshot.val()!==null)
       if(exist){
@@ -95,19 +96,42 @@ export function logOut(cb){
   }
 }
 
-export function submitProfileChanges({accontHandle, img_src}){
+
+export function submitProfileChanges({accountHandle, imgSrc}, callback){
   return dispatch => {
-    const user = firebaseApp.auth().currentUser;
-    user.updateProfile({
-      displayName: accountHandle,
-      photoURL: img_src
-    }).then(() => {
-      console.log("Success updating profile")
-      //update user
-      fetchUser(user.uid);
-    },
-      (error) => {console.log("Failure updating profile")}
-    );
+
+    console.log("New handle:", accountHandle);
+    console.log("Img src:", imgSrc);
+
+    firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")
+    .then((snapshot) => {
+      const exist = (snapshot.val()!==null)
+      if(exist) {
+        alert("Account handle already exists!");
+      }
+      else {
+        console.log("handle doesn't exist!");
+        const user = firebaseApp.auth().currentUser;
+        firebaseApp.database().ref('AccountHandles/'+user.displayName).remove();
+        addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle));
+
+        const updates = {}
+        updates['/Users/'+user.uid+'/accountHandle'] = accountHandle;
+        firebaseApp.database().ref().update(updates);
+        //addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
+
+        user.updateProfile({
+          displayName: accountHandle,
+        }).then(() => {
+          console.log("Success updating profile")
+          //update user
+
+          dispatch(fetchUser(user.uid));
+        },
+          (error) => {console.log("Failure updating profile")}
+        );
+      }
+    });
   }
 }
 
