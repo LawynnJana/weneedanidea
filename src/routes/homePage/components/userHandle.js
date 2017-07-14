@@ -66,10 +66,9 @@ class UserHandle extends Component {
   }
 }
 
-function validate(values){
+const validate = values => {
   const errors = {};
   //check if acc handle valid?
-
   if(!values.accountHandle){
     errors.accountHandle = "Account handle cannot be empty!";
   }
