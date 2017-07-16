@@ -1,4 +1,12 @@
-import { FETCH_USER, LOGOUT, SET_USR_HANDLE, PROFILE_EDIT } from './constants';
+import {
+  FETCH_USER,
+  LOGOUT,
+  SET_USR_HANDLE,
+  PROFILE_EDIT,
+  FETCH_POSTS,
+  FETCH_POST,
+} from './constants';
+
 import { firebaseApp } from '../../../firebase';
 
 export function fetchUser(uid){
@@ -70,11 +78,6 @@ export function submitUserHandle( { accountHandle } , callback){
     }).catch((err) => {
       console.log('Error when submitting user handle: ', err)
     });
-
-    dispatch({
-    type: SET_USR_HANDLE,
-    payload: accountHandle
-    })
   }
 }
 
@@ -97,50 +100,131 @@ export function logOut(cb){
 }
 
 
-export function submitProfileChanges({accountHandle, imgSrc}, callback){
+export function submitProfileChanges({accountHandle, picture}, callback){
   return dispatch => {
 
-    console.log("New handle:", accountHandle);
-    console.log("Img src:", imgSrc);
+    const user = firebaseApp.auth().currentUser;
 
-    firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")
-    .then((snapshot) => {
-      const exist = (snapshot.val()!==null)
-      if(exist) {
-        alert("Account handle already exists!");
-      }
-      else {
-        console.log("handle doesn't exist!");
-        const user = firebaseApp.auth().currentUser;
-        firebaseApp.database().ref('AccountHandles/'+user.displayName).remove();
-        addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle));
+    if(picture){
+      console.log("Pic change")
+      const ref = firebaseApp.storage().ref(user.uid+'/profile/profile_pic');
+      ref.put(picture).then(()=>{
+        console.log("gang")
+          firebaseApp.storage().ref().child(user.uid+'/profile/profile_pic').getDownloadURL().then((photoURL) => {
+            console.log("success")
+            user.updateProfile({
+              photoURL
+            });
+            dispatch(fetchUser(user.uid));
+          })
+        });
+    }
 
-        const updates = {}
-        updates['/Users/'+user.uid+'/accountHandle'] = accountHandle;
-        firebaseApp.database().ref().update(updates);
-        //addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
+    if(accountHandle){
+      firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")
+      .then((snapshot) => {
+        const exist = (snapshot.val()!==null)
+        if(exist && accountHandle.toLowerCase() !== user.displayName.toLowerCase()) {
+          alert("Account handle already exists!");
+        }
+        else {
+          if(accountHandle === user.displayName){
+            alert("Same name! No change!");
+          }
+          else{
+            console.log("handle doesn't exist!");
 
-        user.updateProfile({
-          displayName: accountHandle,
-        }).then(() => {
-          console.log("Success updating profile")
-          //update user
+            firebaseApp.database().ref('AccountHandles/'+user.displayName.toLowerCase()).remove();
+            addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()));
 
-          dispatch(fetchUser(user.uid));
-        },
-          (error) => {console.log("Failure updating profile")}
-        );
-      }
-    });
+            const updates = {}
+            updates['/Users/'+user.uid+'/accountHandle'] = accountHandle;
+            firebaseApp.database().ref().update(updates);
+            //addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
+
+            user.updateProfile({
+              displayName: accountHandle,
+            }).then(() => {
+              console.log("Success updating profile")
+              //update user
+
+              dispatch(fetchUser(user.uid));
+            },
+              (error) => {console.log("Failure updating profile")}
+            );
+          }
+        }
+      });
+    }
+
   }
 }
 
-export function createPost(values){
+const guid = () => {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+export function createPost({title, categories, content}, callback){
   return dispatch => {
-    // const user = firebaseApp.auth().currentUser;
-    // firebaseApp.database().ref('Posts/'+user.uid+'/'+values.title).set({
-    //   title: values.title,
-    //   content: values.content,
-    // })
+    const user = firebaseApp.auth().currentUser;
+    const postId = guid();
+    const ref = firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`);
+    console.log("Title:",title," Categories: ", categories, " Content: ", content);
+
+    if(!categories) {
+      categories = '';
+    }
+
+    const today = new Date(),
+      date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate(),
+      time = today.getTime();
+
+    ref.set({
+      title,
+      categories,
+      content,
+      date,
+      time,
+      id: postId,
+    });
+
+    alert('Post created!');
+
+    callback();
+  }
+}
+
+export function fetchPost(postId){
+  return dispatch => {
+    const user = firebaseApp.auth().currentUser;
+    const ref = firebaseApp.database.ref(`Users/${user.uid}/posts/${postId}`);
+    ref.once('value').then((snapshot) => {
+      const post = snapshot.val();
+      dispatch({
+        type:FETCH_POST,
+        payload: post
+      })
+    })
+  }
+
+}
+export function fetchPosts(){
+  return dispatch => {
+    const user = firebaseApp.auth().currentUser;
+    const ref = firebaseApp.database().ref(`Users/${user.uid}/posts`);
+    ref.once('value').then((snapshot)=>{
+      const posts = snapshot.val();
+      console.log('Posts: ', posts);
+      dispatch({
+        type: FETCH_POSTS,
+        payload: posts
+      });
+    });
   }
 }

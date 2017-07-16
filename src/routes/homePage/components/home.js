@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { logOut } from '../actions'
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import MyPosts from './postsFeed';
 
 class Home extends Component {
 

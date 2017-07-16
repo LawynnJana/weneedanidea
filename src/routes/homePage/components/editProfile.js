@@ -23,50 +23,39 @@ const renderField = field => {
         {touched ? error  : ''}
       </div>
     </div>
-
   );
 }
 
+
+const adaptFileEventToValue = delegate =>
+  e => delegate(e.target.files[0])
 
 const FileInput = ({
   photoURL,
   input: {
     value: omitValue,
+    onChange,
+    onBlur,
     ...inputProps,
   },
   meta: omitMeta,
   ...props,
 }) => {
 
-  function onImageClick(){
-    $('#myInput').click();
-    //change redux photoUrl state
-  }
-
-  function onImageUpload(e){
-    e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    reader.onloadend = () => {
-      //call action
-      let imageSrc = reader.result
-      console.log("Image source:", imageSrc)
-      console.log("file: ",file)
-      //this.props.changePicture(file, imageSrc)
-    }
-    reader.readAsDataURL(file);
-  }
+  const onImageClick = () => $('#myInput').click();
 
   return  (
     <div>
       <input
       id="myInput"
       style={{visibility: 'hidden', position: 'absolute'}}
+      onChange={adaptFileEventToValue(onChange)}
+      onBlur={adaptFileEventToValue(onBlur)}
       type="file"
       {...inputProps}
       {...props}
       accept="image/png, image/jpg, image/jpeg"
-      onChange={onImageUpload}
+
       />
     <img alt="" className="edit-profile-pic" onClick={onImageClick} src={photoURL}/>
   </div>)
@@ -77,6 +66,7 @@ class Editable extends Component {
   constructor(props){
     super(props)
   }
+
   handleProfileSubmit(values){
     this.props.submitProfileChanges(values, () => {
       this.props.history.push('profile');
@@ -98,10 +88,9 @@ class Editable extends Component {
               <form onSubmit={handleSubmit(this.handleProfileSubmit.bind(this))}>
                   <div className="row avatar">
                     <Field
-                      name="imgSrc"
+                      name="picture"
                       photoURL={user.photoURL}
                       component={FileInput}
-                      type="file"
                     />
                   </div>
                   <div className="info">
@@ -129,10 +118,9 @@ class Editable extends Component {
   }
 }
 
-function validate(values){
+const validate = values => {
   const errors = {};
   return errors;
-
 }
 
 export default withRouter(reduxForm({

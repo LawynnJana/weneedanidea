@@ -7,11 +7,11 @@ import { Switch, Route, Link, withRouter } from 'react-router-dom';
 
 import NavBar from './components/navbar';
 import Home from './components/home';
-import PostsShow from './components/postsShow';
+import Posts from './components/posts';
 import PostsNew from './components/postsNew';
 import UserProfile from './components/profile';
 import UserHandle from './components/userHandle';
-
+import PostShow from './components/postShow';
 
 
 class User extends Component {
@@ -59,7 +59,9 @@ class User extends Component {
         <NavBar/>
         <Switch>
           <Route path="/profile" render={() => <UserProfile user={this.props.currentUser}/>} />
-          <Route path="/user/posts" component={PostsShow} />
+          <Route path="/user/posts/:id" render={(props) => <PostShow {...this.props} {...props}/>} />
+          <Route path="/user/posts" render={() => <Posts/>} />
+
           <Route path="/" render={() => <Home user={this.props.currentUser} {...this.props}/>} />
         </Switch>
       </div>

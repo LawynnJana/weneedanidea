@@ -8,6 +8,7 @@
       "$uid": {
         "posts": {
           ".read": "auth != null",
+          ".write": "auth != null",
           ".indexOn": [
             "likes"
           ]

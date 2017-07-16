@@ -35,7 +35,7 @@ class PostsNew extends Component {
       this.props.history.push('/');
     });
   }
-  
+
   render() {
     //passed by redux-form
     const { handleSubmit } = this.props;
@@ -49,7 +49,7 @@ class PostsNew extends Component {
             component={this.renderField}
           />
           <Field
-            label="Tags"
+            label="Categories"
             name="categories"
             component={this.renderField}
           />
