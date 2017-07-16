@@ -99,7 +99,6 @@ export function logOut(cb){
   }
 }
 
-
 export function submitProfileChanges({accountHandle, picture}, callback){
   return dispatch => {
 
@@ -160,22 +159,22 @@ export function submitProfileChanges({accountHandle, picture}, callback){
   }
 }
 
-const guid = () => {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
+// const guid = () => {
+//   function s4() {
+//     return Math.floor((1 + Math.random()) * 0x10000)
+//       .toString(16)
+//       .substring(1);
+//   }
+//   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+//     s4() + '-' + s4() + s4() + s4();
+// }
 
 export function createPost({title, categories, content}, callback){
   return dispatch => {
-    const user = firebaseApp.auth().currentUser;
-    const postId = guid();
-    const ref = firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`);
-    console.log("Title:",title," Categories: ", categories, " Content: ", content);
+
+    const { uid } = firebaseApp.auth().currentUser;
+    const ref = firebaseApp.database().ref(`Users/${uid}/posts`).push();
+    const id = ref.key;
 
     if(!categories) {
       categories = '';
@@ -191,19 +190,18 @@ export function createPost({title, categories, content}, callback){
       content,
       date,
       time,
-      id: postId,
-    });
-
+      id
+    })
     alert('Post created!');
-
     callback();
+
   }
 }
 
 export function fetchPost(postId){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
-    const ref = firebaseApp.database.ref(`Users/${user.uid}/posts/${postId}`);
+    const ref = firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`);
     ref.once('value').then((snapshot) => {
       const post = snapshot.val();
       dispatch({
@@ -214,7 +212,7 @@ export function fetchPost(postId){
   }
 
 }
-export function fetchPosts(){
+export function fetchPosts(callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
     const ref = firebaseApp.database().ref(`Users/${user.uid}/posts`);
@@ -225,6 +223,17 @@ export function fetchPosts(){
         type: FETCH_POSTS,
         payload: posts
       });
+      if(callback){
+        console.log('callback callinggg');
+        callback();
+      }
     });
+  }
+}
+
+export function deletePost(postId, callback){
+  return dispatch => {
+    const user = firebaseApp.auth().currentUser;
+    firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`).remove().then(() => fetchPosts()).then(()=> callback());
   }
 }

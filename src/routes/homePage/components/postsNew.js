@@ -3,6 +3,13 @@ import { Field, reduxForm } from 'redux-form';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createPost } from '../actions';
+import DropdownList from 'react-widgets/lib/DropdownList';
+
+//import 'react-widgets/dist/css/react-widgets.css'
+
+const categories = [ { category: 'Cooking', value: 'cooking' },
+  { category: 'Sports', value: 'sports' },
+  { category: 'Education', value: 'education' } ];
 
 class PostsNew extends Component {
 
@@ -10,7 +17,6 @@ class PostsNew extends Component {
     console.log("postsNew.js mounted");
   }
   renderField(field) {
-
     const { meta: { touched, error } } = field;
     const className = `form-group ${touched && error ? 'has-danger' : ''}`
 
@@ -30,6 +36,16 @@ class PostsNew extends Component {
     )
   }
 
+  renderDropdownList ({ input, data, valueField, textField }){
+    return (
+      <DropdownList {...input}
+        data={data}
+        valueField={valueField}
+        textField={textField}
+        onChange={input.onChange} />
+    );
+  }
+
   onSubmit(values) {
     this.props.createPost(values, () => {
       this.props.history.push('/');
@@ -40,6 +56,7 @@ class PostsNew extends Component {
     //passed by redux-form
     const { handleSubmit } = this.props;
 
+
     return (
       <div>
         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
@@ -48,11 +65,14 @@ class PostsNew extends Component {
             name="title"
             component={this.renderField}
           />
+          <label>Category</label>
           <Field
-            label="Categories"
-            name="categories"
-            component={this.renderField}
-          />
+           name="category"
+           component={this.renderDropdownList.bind(this)}
+           data={categories}
+           valueField="value"
+           textField="category"/>
+
           <Field
             label="Content"
             name="content"
@@ -74,9 +94,9 @@ function validate(values) {
   if(!values.title || values.title.length < 3) {
     errors.title = "Enter a title! that is at least 3 characters!";
   }
-  if(!values.categories) {
-    errors.categories = "Enter a category!";
-  }
+  // if(!values.categories) {
+  //   errors.categories = "Enter a category!";
+  // }
 
   if(!values.content) {
     errors.content = "Enter some content!";
