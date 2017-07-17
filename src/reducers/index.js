@@ -5,6 +5,7 @@ import userReducer from '../routes/homePage/reducers/user_reducer';
 import registerReducer from '../routes/registerPage/reducers/register_reducer';
 import loginReducer from '../routes/loginPage/reducers/login_reducer';
 import posts from '../routes/homepage/reducers/fetch_posts_reducer';
+import subcategoryReducer from '../routes/homepage/reducers/fetch_subcategory';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   registerStatus: registerReducer,
   loginStatus: loginReducer,
   sessionStatus: sessionReducer,
+  subcategory: subcategoryReducer
 });
 
 export default rootReducer;

@@ -61,7 +61,6 @@ class User extends Component {
           <Route path="/profile" render={() => <UserProfile user={this.props.currentUser}/>} />
           <Route path="/user/posts/:id" render={(props) => <PostShow {...this.props} {...props}/>} />
           <Route path="/user/posts" render={() => <Posts/>} />
-
           <Route path="/" render={() => <Home user={this.props.currentUser} {...this.props}/>} />
         </Switch>
       </div>

@@ -5,6 +5,7 @@ import {
   PROFILE_EDIT,
   FETCH_POSTS,
   FETCH_POST,
+  FETCH_SUBCATEGORY
 } from './constants';
 
 import { firebaseApp } from '../../../firebase';
@@ -159,16 +160,7 @@ export function submitProfileChanges({accountHandle, picture}, callback){
   }
 }
 
-// const guid = () => {
-//   function s4() {
-//     return Math.floor((1 + Math.random()) * 0x10000)
-//       .toString(16)
-//       .substring(1);
-//   }
-//   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-//     s4() + '-' + s4() + s4() + s4();
-// }
-
+// new post
 export function createPost({title, categories, content}, callback){
   return dispatch => {
 
@@ -197,7 +189,18 @@ export function createPost({title, categories, content}, callback){
 
   }
 }
+export function fetchSubcategory(category, subcategories){
+  return dispatch => {
+    console.log('sub: ', subcategories[category]);
+    dispatch({
+      type: FETCH_SUBCATEGORY,
+      payload: subcategories[category]
+    })
+  }
+}
 
+
+// show posts
 export function fetchPost(postId){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
@@ -230,7 +233,6 @@ export function fetchPosts(callback){
     });
   }
 }
-
 export function deletePost(postId, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
