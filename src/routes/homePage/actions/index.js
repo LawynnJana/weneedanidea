@@ -161,33 +161,41 @@ export function submitProfileChanges({accountHandle, picture}, callback){
 }
 
 // new post
-export function createPost({title, category, content}, callback){
+export function createPost({title, category, content, subcategory}, callback){
   return dispatch => {
 
+    console.log('category', category.value);
+    console.log('subcategory', subcategory.value);
     const { uid } = firebaseApp.auth().currentUser;
-    const ref = firebaseApp.database().ref(`Users/${uid}/posts`).push();
+    const ref = firebaseApp.database().ref(`Users/${uid}/Posts/Active`).push();
     const id = ref.key;
-    let categoryVal = null;
-    if(!category) {
-      categoryVal = '';
-    } else {
-      categoryVal = category.value;
-    }
 
     const today = new Date(),
       date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate(),
       time = today.getTime();
 
-    ref.set({
-      title: title,
-      categories:categoryVal,
-      body: content,
-      date: date,
-      time: time,
-      id: id,
-      Likes: 0,
-      Shares: 0
-    })
+      ref.set({
+        Location: {
+          Category: category.value,
+          SubCategory: subcategory.value,
+        },
+        Statistics: {
+          Dislikes: 0,
+          Likes: 0,
+          Shares: 0,
+        }
+      });
+    // ref.set({
+    //   title: title,
+    //   categories:category.value,
+    //   subcategory: subcategory.value,
+    //   body: content,
+    //   date: date,
+    //   time: time,
+    //   id: id,
+    //   Likes: 0,
+    //   Shares: 0
+    // })
     alert('Post created!');
     callback();
 
