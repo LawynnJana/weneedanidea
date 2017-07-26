@@ -164,27 +164,43 @@ export function submitProfileChanges({accountHandle, picture}, callback){
 export function createPost({title, category, content, subcategory}, callback){
   return dispatch => {
 
-    console.log('category', category.value);
-    console.log('subcategory', subcategory.value);
-    const { uid } = firebaseApp.auth().currentUser;
-    const ref = firebaseApp.database().ref(`Users/${uid}/Posts/Active`).push();
-    const id = ref.key;
+    console.log('category', category.category);
+    console.log('subcategory', subcategory.subcategory);
 
+    const { uid } = firebaseApp.auth().currentUser;
+    const userRef = firebaseApp.database().ref(`Users/${uid}/Posts/Active`).push();
+    const postsRefKey = userRef.key;
+    const Category = category.category.replace(/\s/g, '');
+    const SubCategory = subcategory.subcategory.replace(/\s/g, '');
     const today = new Date(),
-      date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate(),
+      CreationDate = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate(),
       time = today.getTime();
 
-      ref.set({
-        Location: {
-          Category: category.value,
-          SubCategory: subcategory.value,
-        },
-        Statistics: {
-          Dislikes: 0,
-          Likes: 0,
-          Shares: 0,
-        }
-      });
+    userRef.set({
+      Location: {
+        Category,
+        SubCategory,
+      },
+      Statistics: {
+        Dislikes: 0,
+        Likes: 0,
+        Shares: 0,
+      }
+    });
+    const postsRef = firebaseApp.database().ref(`Posts/${Category}/${SubCategory}/Active/${postsRefKey}`);
+    postsRef.set({
+      Body: content,
+      CardInfo: {
+        CreationDate,
+        Dislikes: 0,
+        Likes: 0,
+        Shares: 0,
+        Title: title,
+      },
+      LastEditDate: CreationDate,
+      Reports: 0,
+      UserId: uid
+    });
     // ref.set({
     //   title: title,
     //   categories:category.value,
