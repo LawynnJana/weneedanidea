@@ -39,18 +39,7 @@ class NavBar extends Component {
               <li><Link to="/user/posts">My Posts</Link></li>
               <li><Link to="/profile">Profile</Link></li>
               <li><button onClick={this.handleLogout.bind(this)} className="btn btn-info">Logout</button></li>
-              <li>
-                <a className="btn btn-default btn-outline btn-circle collapsed"  data-toggle="collapse" href="#nav-collapse3" aria-expanded="false" aria-controls="nav-collapse3">Search</a>
-              </li>
             </ul>
-            <div className="collapse nav navbar-nav nav-collapse slide-down" id="nav-collapse3">
-              <form className="navbar-form navbar-right" role="search" onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <input type="text" className="form-control" placeholder="Search" />
-                </div>
-                <button type="submit" className="btn btn-danger"><span className="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-              </form>
-            </div>
           </div>
         </div>
       </nav>

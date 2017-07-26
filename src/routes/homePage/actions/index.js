@@ -161,15 +161,17 @@ export function submitProfileChanges({accountHandle, picture}, callback){
 }
 
 // new post
-export function createPost({title, categories, content}, callback){
+export function createPost({title, category, content}, callback){
   return dispatch => {
 
     const { uid } = firebaseApp.auth().currentUser;
     const ref = firebaseApp.database().ref(`Users/${uid}/posts`).push();
     const id = ref.key;
-
-    if(!categories) {
-      categories = '';
+    let categoryVal = null;
+    if(!category) {
+      categoryVal = '';
+    } else {
+      categoryVal = category.value;
     }
 
     const today = new Date(),
@@ -177,12 +179,14 @@ export function createPost({title, categories, content}, callback){
       time = today.getTime();
 
     ref.set({
-      title,
-      categories,
-      content,
-      date,
-      time,
-      id
+      title: title,
+      categories:categoryVal,
+      body: content,
+      date: date,
+      time: time,
+      id: id,
+      Likes: 0,
+      Shares: 0
     })
     alert('Post created!');
     callback();

@@ -14,7 +14,7 @@ class PostList extends Component {
       posts.reverse();
     }
     return _.map(posts, post => {
-      return <li key={post.id} className="list-group-item"><Link to={`/user/posts/${post.id}`}>{post.title}</Link></li>
+      return <li key={post.id} className="list-group-item"><Link to={`/user/show/${post.id}`}>{post.title}</Link> - - - - <i className="glyphicon glyphicon-heart" aria-hidden="true"></i> {post.Likes} - - - - - <i className="glyphicon glyphicon-share-alt" aria-hidden="true"></i> {post.Shares}</li>
     })
   }
   render(){

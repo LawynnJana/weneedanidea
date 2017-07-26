@@ -20,7 +20,7 @@ class Posts extends Component {
 
           <Switch>
             <Route path="/user/posts/new" render={() => <PostList type="new"/>} />
-            <Route path="/" render={ () => <PostList type="created"/>} />
+            <Route path="/user/posts" render={ () => <PostList type="created"/>} />
           </Switch>
       </div>
     );

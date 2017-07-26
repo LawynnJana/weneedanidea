@@ -20,9 +20,10 @@ class PostShow extends Component {
       <div>
         {post ?
           <div>
+
             <h1>{post.title}</h1>
-            <h3>{post.categories}</h3>
-            <p>{post.content}</p>
+            <label>Category: </label><span>{post.categories}</span>
+            <p>{post.body}</p>
             <button className="btn btn-danger" onClick={this.handleDelete.bind(this)}>Delete</button>
           </div>
           : <div>Loading this post</div>

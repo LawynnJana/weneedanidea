@@ -26,7 +26,16 @@ const subCategories = {
   ]
 }
 
-
+const FIELDS = {
+  title: {
+    type: 'input',
+    label: 'Enter a title'
+  },
+  content: {
+    type: 'textarea',
+    label: 'Enter some content'
+  }
+}
 class PostsNew extends Component {
   constructor(props){
     super(props);
@@ -62,23 +71,10 @@ class PostsNew extends Component {
   //   this.props.fetchSubcategory(event.value, subCategories);
   // }
 
-  renderDropdownList ({ type, input, data, valueField, textField }){
-    //if(input.value.value && input.value.value === 'categor')
-    console.log('input', input);
-    let dataTemp = data;
-    // if(type === 'subcategory'){
-    //   console.log('subcat ', this.props.subcategory);
-    //   if(!_.isEmpty(this.props.subcategory)){
-    //     console.log('gang');
-    //     dataTemp = this.props.subcategory;
-    //   } else{
-    //     dataTemp =[];
-    //   }
-    //
-    // }
+  renderDropdownList ({ input, data, valueField, textField }){
     return (
       <DropdownList {...input}
-        data={dataTemp}
+        data={data}
         valueField={valueField}
         textField={textField}
         onChange={input.onChange} />
@@ -106,7 +102,6 @@ class PostsNew extends Component {
           <label>Category</label>
           <Field
            name="category"
-           type="category"
            component={this.renderDropdownList.bind(this)}
            data={categories}
            valueField="value"
@@ -127,18 +122,15 @@ class PostsNew extends Component {
 function validate(values) {
   //console.log(values) -> { title: 'adbc', categories:'abc', content: 'gank'}
   const errors = {};
+  
+  _.each(FIELDS, (type, field) => {
+    if(!values[field]){
+      errors[field] = `Enter a ${field}`;
+    }
+  })
 
-  console.log("guy",values);
-  //validate the inputs from 'values'
-  if(!values.title || values.title.length < 3) {
-    errors.title = "Enter a title! that is at least 3 characters!";
-  }
   if(!values.category) {
     errors.categories = "Enter a category!";
-  }
-
-  if(!values.content) {
-    errors.content = "Enter some content!";
   }
 
   // If errors is empty, form in good to submit
@@ -154,7 +146,7 @@ const mapStateToProps = ({ subcategory }) => {
 
 export default withRouter(reduxForm({
   validate,
-  form: 'PostsNewForm'
+  form: 'PostsNewForm',
 })(
   connect(mapStateToProps, { createPost, fetchSubcategory })(PostsNew)
 ));
