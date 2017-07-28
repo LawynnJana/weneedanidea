@@ -42,7 +42,7 @@ function addToUserDB(accountHandle, ref){
 function addAccHandleToDb(accountHandle, userRef){
   userRef.set(accountHandle)
 }
-
+//register stuff
 export function submitUserHandle( { accountHandle } , callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
@@ -78,6 +78,7 @@ export function submitUserHandle( { accountHandle } , callback){
   }
 }
 
+//navbar stuff
 export function logOut(cb){
   return dispatch => {
     firebaseApp.auth().signOut().then(()=>{
@@ -96,6 +97,7 @@ export function logOut(cb){
   }
 }
 
+//Profile stuff
 export function submitProfileChanges({accountHandle, picture}, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
@@ -248,10 +250,44 @@ export function fetchPosts(callback){
     });
   }
 }
-
+//post show stuff
 export function deletePost(postId, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
     firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`).remove().then(() => fetchPosts()).then(()=> callback());
+  }
+}
+
+
+// news Feed
+export function fetchNewsFeed(){
+  return dispatch => {
+    const { uid } = firebaseApp.auth().currentUser;
+    const ref = firebaseApp.database().ref(`Posts/Active`);
+    ref.once('value').then((snapshot)=>{
+      const pathsToPosts = _.map(snapshot.val(), (post, key) => {
+        const { Location: { Category, SubCategory } } = post;
+        return firebaseApp.database().ref(`Posts/${Category}/${SubCategory}/Active/${key}`).once('value').then((ss) => {
+          return {...ss.val(), postId: key, creationTime: new Date(ss.val().CardInfo.CreationDate).getTime()};
+        });
+      });
+      return Promise.all(pathsToPosts);
+    }).then((posts)=>{
+      const arrayToObject = (array, keyField) =>
+       array.reduce((obj, item) => {
+         obj[item[keyField]] = item
+         return obj;
+       }, {})
+      const peopleObject = arrayToObject(posts, 'postId');
+      dispatch({
+        type: FETCH_POSTS,
+        payload: peopleObject
+      });
+
+      if(callback){
+        console.log('callback calling...');
+        callback();
+      }
+    });
   }
 }

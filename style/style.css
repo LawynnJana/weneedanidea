@@ -4,7 +4,11 @@ Code snippet by maridlcrmn for Bootsnipp.com
 Follow me on Twitter @maridlcrmn
 */
 
-.navbar-brand { position: relative; z-index: 2; }
+/*Nav bar*/
+.navbar-brand { position: relative; z-index: 2; color: #3a4e58; font-family: Helvetica !important; }
+.navbar-brand:hover {
+  color: #86abf9;
+}
 
 .navbar-nav.navbar-right .btn { position: relative; z-index: 2; padding: 4px 20px; margin: 10px auto; transition: transform 0.3s; }
 
@@ -13,17 +17,32 @@ Follow me on Twitter @maridlcrmn
 
 .navbar .nav-collapse { position: absolute; z-index: 1; top: 0; left: 0; right: 0; bottom: 0; margin: 0; padding-right: 120px; padding-left: 80px; width: 100%; }
 .navbar.navbar-default .nav-collapse { background-color: #f8f8f8; }
-.navbar.navbar-inverse .nav-collapse { background-color: #222; }
 .navbar .nav-collapse .navbar-form { border-width: 0; box-shadow: none; }
 .nav-collapse>li { float: right; }
 
 .btn.btn-circle { border-radius: 50px; }
 .btn.btn-outline { background-color: transparent; }
 
+.navbar-nav.navbar-right>li>a{
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #3a4e58;
+}
+.navbar-nav.navbar-right>li>a:hover {
+  text-decoration: none !important;
+  background-color: white;
+  color: #86abf9;
+}
 .navbar-nav.navbar-right .btn:not(.collapsed) {
-    background-color: rgb(111, 84, 153);
+    background-color: inherit;
+    text-transform: uppercase;
     border-color: rgb(111, 84, 153);
-    color: rgb(255, 255, 255);
+    color: #3a4e58;
+}
+
+.navbar-nav.navbar-right .btn:not(.collapsed):hover {
+    background-color: #86abf9;
+    color: white;
 }
 
 .navbar.navbar-default .nav-collapse,
@@ -63,7 +82,18 @@ Follow me on Twitter @maridlcrmn
         transform: translate(0px,0px);
     }
 }
+/*End of NavBar*/
 
+/*Home page*/
+.panel > .panel-heading {
+  color: white!;
+  background-color: #6f5f5f !important;
+  border-color: ##f2f2f2 !important;
+}
+.panel > .panel-heading > .panel-title{
+  color: #f2f2f2 !important;
+}
+/*End of Home page*/
 
 /*PROFILEPAGe*/
 .card {
@@ -143,32 +173,6 @@ Follow me on Twitter @maridlcrmn
     min-height: 30px;
     padding: 0 20px 20px 20px;
     margin: 20px 0 0 0;
-}
-
-.card .card-comments {
-    padding: 20px;
-    margin: 0;
-    background-color: #f8f8f8;
-}
-
-.card .card-comments .comments-collapse-toggle {
-    padding: 0;
-    margin: 0 20px 12px 20px;
-}
-
-.card .card-comments .comments-collapse-toggle a,
-.card .card-comments .comments-collapse-toggle span {
-    padding-right: 5px;
-    overflow: hidden;
-    font-size: 12px;
-    color: #999;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.card-comments .media-heading {
-    font-size: 13px;
-    font-weight: bold;
 }
 
 .card.people {
@@ -372,3 +376,44 @@ Follow me on Twitter @maridlcrmn
 	line-height: 1.6;
 }
 /*End: Post List Css*/
+
+
+
+/*PostsNew.js*/
+.new-post{
+  padding-top: 0px;
+}
+.new-post input{
+  border: 0;
+  font-size: 40px;
+  font-family: Tahoma;
+}
+
+.new-post .post-img:hover{
+  cursor: pointer;
+}
+.new-post button{
+  background: #21A0A0;
+  color: white;
+}
+.new-post button:hover {
+  background: #66B3BA;
+  color: white;
+}
+
+.new-post textarea{
+  border: 0;
+  font-size: 20px;
+  font-family: Baskerville;
+  height: 150px;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+    outline-style: none;
+
+}
+*:focus {
+    outline: none;
+}
+/*End PostsNew.js*/

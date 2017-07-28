@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { createPost, fetchSubcategory } from '../actions';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import _ from 'lodash';
+
+import NavbarNewPost from './navbarNewPost.js';
 //import 'react-widgets/dist/css/react-widgets.css'
 
 const categories = [ { category: 'Cooking', value: 'cooking' },
@@ -37,12 +39,47 @@ const FIELDS = {
   }
 }
 
+const adaptFileEventToValue = delegate =>
+  e => delegate(e.target.files[0])
+
+const FileInput = ({
+  photoURL,
+  input: {
+    value: omitValue,
+    onChange,
+    onBlur,
+    ...inputProps,
+  },
+  meta: omitMeta,
+  ...props,
+}) => {
+
+  const onImageClick = () => $('#myInput').click();
+
+  return  (
+    <div>
+      <input
+      id="myInput"
+      style={{ visibility: 'hidden', position: 'absolute'}}
+      onChange={adaptFileEventToValue(onChange)}
+      onBlur={adaptFileEventToValue(onBlur)}
+      type="file"
+      {...inputProps}
+      {...props}
+      accept="image/png, image/jpg, image/jpeg"
+
+      />
+    <i className="fa fa-picture-o fa-2x post-img" aria-hidden="true" onClick={onImageClick} ></i>
+  </div>)
+}
+
 class PostsNew extends Component {
   constructor(props){
     super(props);
     //this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.state = {
-      subcategory: []
+      subcategory: [],
+      imgSrc: '',
     }
   }
 
@@ -50,15 +87,34 @@ class PostsNew extends Component {
     console.log("postsNew.js mounted");
   }
 
-  renderField(field) {
+  renderInputField(field) {
     const { meta: { touched, error } } = field;
     const className = `form-group ${touched && error ? 'has-danger' : ''}`
 
     return (
       <div className={className}>
-        <label>{field.label}</label>
         <input
           className="form-control"
+          placeholder={field.placeholder}
+          type={field.type}
+          {...field.input}
+        />
+        <div className="text-help">
+          {touched ? error  : ''}
+        </div>
+      </div>
+    )
+  }
+
+  renderTextAreaField(field) {
+    const { meta: { touched, error } } = field;
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`
+
+    return (
+      <div className={className}>
+        <textarea
+          className="form-control"
+          placeholder={field.placeholder}
           type={field.type}
           {...field.input}
         />
@@ -80,9 +136,22 @@ class PostsNew extends Component {
 
   }
 
+  handleImageAdd(event, newValue){
+    console.log('New src', newValue);
+    const reader = new FileReader();
+    const url = reader.readAsDataURL(newValue);
+    reader.onloadend = function (e) {
+      this.setState({
+          imgSrc: reader.result
+      })
+    }.bind(this);
+
+  }
+
   renderDropdownList ({ input, data, valueField, textField }){
     return (
       <DropdownList {...input}
+        className="form-group"
         data={data}
         valueField={valueField}
         textField={textField}
@@ -96,45 +165,57 @@ class PostsNew extends Component {
     });
   }
 
+
   render() {
     //passed by redux-form
     const { handleSubmit } = this.props;
-    const { subcategory } = this.state;
+    const { subcategory, imgSrc } = this.state;
     return (
       <div>
-        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-          <Field
-            label="Title"
-            name="title"
-            type="text"
-            component={this.renderField}
-          />
-          <label>Category</label>
-          <Field
-           name="category"
-           component={this.renderDropdownList.bind(this)}
-           data={categories}
-           valueField="value"
-           textField="category"
-           onChange={this.changeSubcategories.bind(this)}
-           />
-          <Field
-            label="Subcategory"
-            name="subcategory"
-            component={this.renderDropdownList.bind(this)}
-            data={subcategory}
-            valueField="value"
-            textField="subcategory"
-          />
-          <Field
-           label="Content"
-           name="content"
-           type="textarea"
-           component={this.renderField}
-         />
-        <button type="submit" className="btn btn-primary">Submit</button>
-        <Link to="/" className="btn btn-danger">Cancel</Link>
-        </form>
+        <NavbarNewPost/>
+        <div className="new-post row">
+          <div className="col-md-8 col-md-offset-2">
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+              <Field
+                placeholder="Title"
+                name="title"
+                type="text"
+                component={this.renderInputField}
+              />
+              <Field
+                name="picture"
+                component={FileInput}
+                onChange={this.handleImageAdd.bind(this)}
+              />
+              <label>Category</label>
+              <Field
+               name="category"
+               component={this.renderDropdownList.bind(this)}
+               data={categories}
+               valueField="value"
+               textField="category"
+               onChange={this.changeSubcategories.bind(this)}
+               />
+              <Field
+                label="Subcategory"
+                name="subcategory"
+                component={this.renderDropdownList.bind(this)}
+                data={subcategory}
+                valueField="value"
+                textField="subcategory"
+              />
+              { imgSrc !== '' && (<img src={imgSrc}/>) }
+              <Field
+                placeholder="Write your story here..."
+                name="content"
+                type="text"
+                component={this.renderTextAreaField}
+               />
+              <button type="submit" className="btn btn-default">Submit</button>
+              <Link to="/" className="btn btn-danger">Cancel</Link>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

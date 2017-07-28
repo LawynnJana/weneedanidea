@@ -80,10 +80,10 @@ class Editable extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-sm-12">
+          <div className="col-sm-12 col-md-8 col-md-offset-2">
             <div className="card hovercard">
-              <div className="cardheader" style={{background: '#fff5f1'}}>
-                <button onClick={onclick} className="btn btn-info">Edit Profile</button>
+              <div className="cardheader" style={{background: '#8FEEE1'}}>
+                <button onClick={onclick} className="btn btn-default">Edit Profile</button>
               </div>
               <form onSubmit={handleSubmit(this.handleProfileSubmit.bind(this))}>
                   <div className="row avatar">

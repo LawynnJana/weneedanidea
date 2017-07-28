@@ -75,13 +75,13 @@ class Login extends Component {
       // <Field>'s name is connected to the form object
       // the name is then used to validate the field item (i.e. empty)
       <div className="row">
-        <div className="col-md-12 col-lg-12">
-          <div className="panel panel-info">
+        <div className="col-md-8 col-md-offset-2 col-lg-8">
+          <div className="panel panel-default">
             <div className="panel-heading">
               <h3 className="panel-title"><strong>Sign In </strong></h3>
             </div>
 
-            <div className="panel-body">
+            <div className="panel-body col-md-offset-2">
               <form className="form-horizontal col-md-8" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field
                   label="E-mail"

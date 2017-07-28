@@ -3,8 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from '../actions';
 
-
-
 class NavBar extends Component {
   constructor(props){
     super(props)
@@ -23,7 +21,7 @@ class NavBar extends Component {
 
   render() {
     return(
-      <nav className="navbar navbar-inverse">
+      <nav className="navbar">
         <div className="container-fluid">
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-3">
@@ -32,7 +30,7 @@ class NavBar extends Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <Link className="navbar-brand" to="/">WeNeedAnIdea</Link>
+            <Link className="navbar-brand" to="/"><strong>Ready</strong></Link>
           </div>
           <div className="collapse navbar-collapse" id="navbar-collapse-3">
             <ul className="nav navbar-nav navbar-right">
