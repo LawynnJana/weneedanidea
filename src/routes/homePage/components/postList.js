@@ -31,8 +31,28 @@ class PostList extends Component {
 
       const date = new Date(CardInfo.CreationDate);
       const dateStr = `${monthNames[date.getMonth()]} ${date.getDate()}`;
-      return <li key={index} className="list-group-item ">
-        <Link to={`/user/show/${post.postId}`}><h2 className="text-danger">{CardInfo.Title}</h2></Link><i className="glyphicon glyphicon-heart" aria-hidden="true"></i> {CardInfo.Likes} <i className="glyphicon glyphicon-share-alt" aria-hidden="true"></i> {CardInfo.Shares} <i className="fa fa-clock-o" aria-hidden="true"></i> {dateStr}</li>
+      return(
+        <div key={index} className="col-xs-12 col-sm-6 col-md-4 col-lg-3 card">
+      		<Link to={`/user/show/${post.postId}`}>
+      		<div className="thumbnail">
+      		  <img src="http://lorempixel.com/600/400" alt="#"/>
+      			<div className="caption">
+      				<h3>
+      	         {CardInfo.Title}
+      				</h3>
+      				<hr/>
+      				<p>
+                {post.Body}
+                Add a post description here !!!
+      				</p>
+              <div className="footer">
+                <i className="glyphicon glyphicon-heart" aria-hidden="true"></i> {CardInfo.Likes} <i className="glyphicon glyphicon-share-alt" aria-hidden="true"></i> {CardInfo.Shares} <i className="fa fa-clock-o" aria-hidden="true"></i> {dateStr}
+              </div>
+      			</div>
+      		</div>
+          </Link>
+    	  </div>
+       )
     });
   }
 
@@ -40,11 +60,10 @@ class PostList extends Component {
     return (
       <div>
         { this.props.posts ?
-          (<div>
-            <ul className="list-group">
+          (<div className="row">
               {this.renderPosts()}
-            </ul>
           </div>):
+
           (<div>{console.log("No posts in list:", this.props.posts)}<div>No posts!</div></div>)
         }
       </div>
