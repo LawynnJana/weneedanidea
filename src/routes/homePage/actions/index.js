@@ -7,8 +7,8 @@ import {
   FETCH_POST,
   FETCH_SUBCATEGORY
 } from './constants';
-
 import { firebaseApp } from '../../../firebase';
+import _ from 'lodash';
 
 export function fetchUser(uid){
   return dispatch => {
@@ -46,24 +46,20 @@ function addAccHandleToDb(accountHandle, userRef){
 export function submitUserHandle( { accountHandle } , callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
-
     firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")
     .then((snapshot) => {
       const exist = (snapshot.val()!==null)
       if(exist){
         alert("Account handle already exists!");
       } else{
-        console.log("handle doesn't exist!");
 
         addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle));
         addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
 
         // Get default profile picture
-
         firebaseApp.storage().ref().child('images/default_profile_img.png').getDownloadURL().then((url) => {
-          console.log("photo url added");
-          console.log(url);
-
+          //console.log("photo url added");
+          //console.log(url);
           // update firebase user
           user.updateProfile({
             displayName: accountHandle,
@@ -85,7 +81,7 @@ export function submitUserHandle( { accountHandle } , callback){
 export function logOut(cb){
   return dispatch => {
     firebaseApp.auth().signOut().then(()=>{
-      console.log("Signed out.");
+      //console.log("Signed out.");
     }, (error) => {
       console.log("Error signing out: ", error);
     })
@@ -102,22 +98,19 @@ export function logOut(cb){
 
 export function submitProfileChanges({accountHandle, picture}, callback){
   return dispatch => {
-
     const user = firebaseApp.auth().currentUser;
 
     if(picture){
-      console.log("Pic change")
       const ref = firebaseApp.storage().ref(user.uid+'/profile/profile_pic');
       ref.put(picture).then(()=>{
-        console.log("gang")
-          firebaseApp.storage().ref().child(user.uid+'/profile/profile_pic').getDownloadURL().then((photoURL) => {
-            console.log("success")
-            user.updateProfile({
-              photoURL
-            });
-            dispatch(fetchUser(user.uid));
-          })
-        });
+        firebaseApp.storage().ref().child(user.uid+'/profile/profile_pic').getDownloadURL().then((photoURL) => {
+          console.log("success")
+          user.updateProfile({
+            photoURL
+          });
+          dispatch(fetchUser(user.uid));
+        })
+      });
     }
 
     if(accountHandle){
@@ -126,28 +119,20 @@ export function submitProfileChanges({accountHandle, picture}, callback){
         const exist = (snapshot.val()!==null)
         if(exist && accountHandle.toLowerCase() !== user.displayName.toLowerCase()) {
           alert("Account handle already exists!");
-        }
-        else {
+        } else {
           if(accountHandle === user.displayName){
             alert("Same name! No change!");
-          }
-          else{
-            console.log("handle doesn't exist!");
-
+          } else {
             firebaseApp.database().ref('AccountHandles/'+user.displayName.toLowerCase()).remove();
             addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()));
 
             const updates = {}
             updates['/Users/'+user.uid+'/accountHandle'] = accountHandle;
             firebaseApp.database().ref().update(updates);
-            //addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
-
             user.updateProfile({
               displayName: accountHandle,
             }).then(() => {
               console.log("Success updating profile")
-              //update user
-
               dispatch(fetchUser(user.uid));
             },
               (error) => {console.log("Failure updating profile")}
@@ -160,13 +145,9 @@ export function submitProfileChanges({accountHandle, picture}, callback){
   }
 }
 
-// new post
+// Creating new posts
 export function createPost({title, category, content, subcategory}, callback){
   return dispatch => {
-
-    console.log('category', category.category);
-    console.log('subcategory', subcategory.subcategory);
-
     const { uid } = firebaseApp.auth().currentUser;
     const userRef = firebaseApp.database().ref(`Users/${uid}/Posts/Active`).push();
     const postsRefKey = userRef.key;
@@ -176,18 +157,23 @@ export function createPost({title, category, content, subcategory}, callback){
       CreationDate = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate(),
       time = today.getTime();
 
+    // Path to Posts/ reference
+    const path = `Posts/${Category}/${SubCategory}/Active/${postsRefKey}`;
+
     userRef.set({
       Location: {
         Category,
         SubCategory,
+        PostId: postsRefKey,
       },
       Statistics: {
         Dislikes: 0,
         Likes: 0,
         Shares: 0,
-      }
+      },
     });
-    const postsRef = firebaseApp.database().ref(`Posts/${Category}/${SubCategory}/Active/${postsRefKey}`);
+
+    const postsRef = firebaseApp.database().ref(path);
     postsRef.set({
       Body: content,
       CardInfo: {
@@ -199,24 +185,13 @@ export function createPost({title, category, content, subcategory}, callback){
       },
       LastEditDate: CreationDate,
       Reports: 0,
-      UserId: uid
+      UserId: uid,
     });
-    // ref.set({
-    //   title: title,
-    //   categories:category.value,
-    //   subcategory: subcategory.value,
-    //   body: content,
-    //   date: date,
-    //   time: time,
-    //   id: id,
-    //   Likes: 0,
-    //   Shares: 0
-    // })
     alert('Post created!');
     callback();
-
   }
 }
+
 export function fetchSubcategory(category, subcategories){
   return dispatch => {
     console.log('sub: ', subcategories[category]);
@@ -227,12 +202,11 @@ export function fetchSubcategory(category, subcategories){
   }
 }
 
-
 // show posts
 export function fetchPost(postId){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
-    const ref = firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`);
+    const ref = firebaseApp.database().ref(`Users/${user.uid}/Posts/Active/${postId}`);
     ref.once('value').then((snapshot) => {
       const post = snapshot.val();
       dispatch({
@@ -241,26 +215,40 @@ export function fetchPost(postId){
       })
     })
   }
-
 }
+
 export function fetchPosts(callback){
   return dispatch => {
-    const user = firebaseApp.auth().currentUser;
-    const ref = firebaseApp.database().ref(`Users/${user.uid}/posts`);
+    const { uid } = firebaseApp.auth().currentUser;
+    const ref = firebaseApp.database().ref(`Users/${uid}/Posts/Active`);
     ref.once('value').then((snapshot)=>{
-      const posts = snapshot.val();
-      console.log('Posts: ', posts);
+      const pathsToPosts = _.map(snapshot.val(), (post, key) => {
+        const { Location: { Category, SubCategory } } = post;
+        return firebaseApp.database().ref(`Posts/${Category}/${SubCategory}/Active/${key}`).once('value').then((ss) => {
+          return {...ss.val(), postId: key, creationTime: new Date(ss.val().CardInfo.CreationDate).getTime()};
+        });
+      });
+      return Promise.all(pathsToPosts);
+    }).then((posts)=>{
+      const arrayToObject = (array, keyField) =>
+       array.reduce((obj, item) => {
+         obj[item[keyField]] = item
+         return obj;
+       }, {})
+      const peopleObject = arrayToObject(posts, 'postId');
       dispatch({
         type: FETCH_POSTS,
-        payload: posts
+        payload: peopleObject
       });
+
       if(callback){
-        console.log('callback callinggg');
+        console.log('callback calling...');
         callback();
       }
     });
   }
 }
+
 export function deletePost(postId, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;

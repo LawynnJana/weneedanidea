@@ -21,9 +21,9 @@ class PostShow extends Component {
         {post ?
           <div>
 
-            <h1>{post.title}</h1>
-            <label>Category: </label><span>{post.categories}</span>
-            <p>{post.body}</p>
+            <h1>{post.CardInfo.Title}</h1>
+
+            <p>{post.Body}</p>
             <button className="btn btn-danger" onClick={this.handleDelete.bind(this)}>Delete</button>
           </div>
           : <div>Loading this post</div>

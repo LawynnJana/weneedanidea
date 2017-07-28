@@ -13,9 +13,7 @@ import UserProfile from './components/profile';
 import UserHandle from './components/userHandle';
 import PostShow from './components/postShow';
 
-
 class User extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -27,30 +25,26 @@ class User extends Component {
     firebaseApp.auth().onAuthStateChanged((user)=>{
       if (user) {
         if(!user.emailVerified){
-          console.log('Not verified, redirect to verification!');
+          console.log('Not verified, redirect to verification...');
           this.props.history.push('verification');
         }
         else {
-          console.log('Verified, fetching user!', user);
+          console.log('Verified, fetching user...', user);
           if(user.displayName === null){
-            console.log("Displayname not set, push('user/accounthandle')")
+            console.log("Displayname not set. Redirect user/accounthandle/...")
             this.props.history.push('user/accounthandle')
           }
           this.props.fetchUser(user.uid);
-          console.log("user: ", user);
-          //if fetchUser is null, prompt user to fill out account handle
         }
-
       }
       else if(!user) {
-        console.log("Not logged in, redirect to login!")
+        console.log("Not logged in, redirecting to login...")
         this.props.history.push('login');
       }
     });
   }
 
   render() {
-    //component doesnt rerender
     if(_.isEmpty(this.props.currentUser)){
       return (<div>Loading</div>);
     }
