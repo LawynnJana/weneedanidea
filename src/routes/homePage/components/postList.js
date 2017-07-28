@@ -35,7 +35,7 @@ class PostList extends Component {
         <div key={index} className="col-xs-12 col-sm-6 col-md-4 col-lg-3 card">
       		<Link to={`/user/show/${post.postId}`}>
       		<div className="thumbnail">
-      		  <img src="http://lorempixel.com/600/400" alt="#"/>
+      		  <img src={CardInfo.ImgSrc !== '' ? CardInfo.ImgSrc : "http://lorempixel.com/600/400"} alt="#"/>
       			<div className="caption">
       				<h3>
       	         {CardInfo.Title}

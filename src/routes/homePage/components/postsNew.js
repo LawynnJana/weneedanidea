@@ -183,7 +183,7 @@ class PostsNew extends Component {
                 component={this.renderInputField}
               />
               <Field
-                name="picture"
+                name="image"
                 component={FileInput}
                 onChange={this.handleImageAdd.bind(this)}
               />

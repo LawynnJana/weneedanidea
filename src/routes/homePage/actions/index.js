@@ -143,12 +143,11 @@ export function submitProfileChanges({accountHandle, picture}, callback){
         }
       });
     }
-
   }
 }
 
 // Creating new posts
-export function createPost({title, category, content, subcategory}, callback){
+export function createPost({title, category, content, subcategory, image}, callback){
   return dispatch => {
     const { uid } = firebaseApp.auth().currentUser;
     const userRef = firebaseApp.database().ref(`Users/${uid}/Posts/Active`).push();
@@ -161,7 +160,6 @@ export function createPost({title, category, content, subcategory}, callback){
 
     // Path to Posts/ reference
     const path = `Posts/${Category}/${SubCategory}/Active/${postsRefKey}`;
-
     userRef.set({
       Location: {
         Category,
@@ -174,21 +172,58 @@ export function createPost({title, category, content, subcategory}, callback){
         Shares: 0,
       },
     });
+    let imgSrc = null;
 
-    const postsRef = firebaseApp.database().ref(path);
-    postsRef.set({
-      Body: content,
-      CardInfo: {
-        CreationDate,
-        Dislikes: 0,
-        Likes: 0,
-        Shares: 0,
-        Title: title,
-      },
-      LastEditDate: CreationDate,
-      Reports: 0,
-      UserId: uid,
+    if(image){
+      const imgRef = firebaseApp.storage().ref(`${uid}/posts/pictures/${postsRefKey}`);
+      imgRef.put(image).then(()=>{
+        firebaseApp.storage().ref().child(`${uid}/posts/pictures/${postsRefKey}`).getDownloadURL().then((photoURL) => {
+          imgSrc = photoURL
+          const postsRef = firebaseApp.database().ref(path);
+          postsRef.set({
+            Body: content,
+            CardInfo: {
+              CreationDate,
+              Dislikes: 0,
+              Likes: 0,
+              Shares: 0,
+              Title: title,
+              ImgSrc: imgSrc,
+            },
+            LastEditDate: CreationDate,
+            Reports: 0,
+            UserId: uid,
+          });
+        })
+      })
+    } else {
+      const postsRef = firebaseApp.database().ref(path);
+      postsRef.set({
+        Body: content,
+        CardInfo: {
+          CreationDate,
+          Dislikes: 0,
+          Likes: 0,
+          Shares: 0,
+          Title: title,
+          ImgSrc: '',
+        },
+        LastEditDate: CreationDate,
+        Reports: 0,
+        UserId: uid,
+      });
+    }
+
+    const activeRef = firebaseApp.database().ref(`Users/${uid}/Posts/NumActivePosts`);
+    let numPosts = 0;
+    activeRef.once('value').then((snapshot)=>{
+      const count = snapshot.val() + 1;
+      activeRef.set(count);
+    }).catch((err) => {
+      alert.log("Error incrementing NumActivePosts...",err);
+      activeRef.set(0);
     });
+
     alert('Post created!');
     callback();
   }
