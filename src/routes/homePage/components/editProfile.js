@@ -10,11 +10,11 @@ const renderField = field => {
   return (
     <div className="form-group col-xs-8 col-sm-4 col-sm-offset-4 col-xs-offset-2">
       <div className="input-group">
-        <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName}></i></span>
+        <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName && field.inputClassName}></i></span>
         <input
           type={field.inputType}
           className="form-control input-sm"
-          placeholder={field.label}
+          placeholder={field.label && field.label}
           aria-describedby="sizing-addon1"
           {...field.input}
         />
@@ -60,7 +60,6 @@ const FileInput = ({
     <img alt="" className="edit-profile-pic" onClick={onImageClick} src={photoURL}/>
   </div>)
 }
-
 
 class Editable extends Component {
   constructor(props){
@@ -116,10 +115,15 @@ class Editable extends Component {
                       <div  className="form-group col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
                         <h4>Gender</h4>
                         <div>
-                          <h6><Field name="sex" component="input" type="radio" value="male"/> Male</h6>
-                          <h6><Field name="sex" component="input" type="radio" value="female"/> Female</h6>
+                          <h6><Field name="gender" component="input" type="radio" value="Male"/> Male</h6>
+                          <h6><Field name="gender" component="input" type="radio" value="Female"/> Female</h6>
                         </div>
                       </div>
+                      <Field
+                        inputType="date"
+                        name="dateOfBirth"
+                        inputClassName="glyphicon glyphicon-user"
+                        component={renderField} />
                     </div>
                     <div className="desc"></div>
                     <div className="desc"></div>

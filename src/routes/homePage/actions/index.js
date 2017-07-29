@@ -96,7 +96,7 @@ export function logOut(cb){
 }
 
 //Profile stuff
-export function submitProfileChanges({accountHandle, picture, firstName, lastName}, callback){
+export function submitProfileChanges({accountHandle, picture, firstName, lastName, dateOfBirth, gender}, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
 
@@ -114,10 +114,16 @@ export function submitProfileChanges({accountHandle, picture, firstName, lastNam
     }
     const userRef =firebaseApp.database().ref(`Users/${user.uid}`);
     if(firstName){
-      userRef.update({FirstName: firstName})
+      userRef.update({FirstName: firstName});
     }
     if(lastName){
-      userRef.update({LastName: lastName})
+      userRef.update({LastName: lastName});
+    }
+    if(gender){
+      userRef.update({Gender: gender});
+    }
+    if(dateOfBirth){
+      userRef.update({DateOfBirth: dateOfBirth});
     }
     if(accountHandle){
       firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")

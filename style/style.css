@@ -3,6 +3,8 @@
 Code snippet by maridlcrmn for Bootsnipp.com
 Follow me on Twitter @maridlcrmn
 */
+@import "variables";
+@import "mixins";
 
 /*Nav bar*/
 .navbar-brand { position: relative; z-index: 2; color: #3a4e58; font-family: Helvetica !important; }
@@ -325,7 +327,15 @@ Follow me on Twitter @maridlcrmn
 
 }
 /*END of PROFILEPAGE*/
+/*PROFILEPAGE EDIT*/
 
+
+.react-datepicker-popper {
+  z-index: 999 !important;
+  transform: translate3d(189px, 251px, 0px) !important;
+}
+
+/*END PROFILEPAGE EDIT*/
 
 
 
