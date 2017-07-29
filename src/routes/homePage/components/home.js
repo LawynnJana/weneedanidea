@@ -21,7 +21,7 @@ class Home extends Component {
         <div className="col-xs-12 col-md-12 col-sm-12">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title">Welcome {user.accountHandle}! </h3>
+              <h3 className="panel-title">Welcome {user.AccountHandle}! </h3>
             </div>
             <div className="panel-body">
               <NewsFeed/>

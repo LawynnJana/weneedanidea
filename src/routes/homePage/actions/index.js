@@ -30,12 +30,12 @@ export function fetchUser(uid){
 
 function addToUserDB(accountHandle, ref){
   ref.set({
-    accountHandle,
-    dateOfBirth: "",
-    firstName: "",
-    gender: "",
-    lastName: "",
-    verificationDate: ""
+    AccountHandle:accountHandle,
+    DateOfBirth: "",
+    FirstName: "",
+    Gender: "",
+    LastName: "",
+    VerificationDate: ""
   })
 }
 
@@ -53,13 +53,11 @@ export function submitUserHandle( { accountHandle } , callback){
         alert("Account handle already exists!");
       } else{
 
-        addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle));
+        addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()));
         addToUserDB(accountHandle ,firebaseApp.database().ref('Users/'+ user.uid));
 
         // Get default profile picture
         firebaseApp.storage().ref().child('images/default_profile_img.png').getDownloadURL().then((url) => {
-          //console.log("photo url added");
-          //console.log(url);
           // update firebase user
           user.updateProfile({
             displayName: accountHandle,
@@ -98,7 +96,7 @@ export function logOut(cb){
 }
 
 //Profile stuff
-export function submitProfileChanges({accountHandle, picture}, callback){
+export function submitProfileChanges({accountHandle, picture, firstName, lastName}, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
 
@@ -114,7 +112,13 @@ export function submitProfileChanges({accountHandle, picture}, callback){
         })
       });
     }
-
+    const userRef =firebaseApp.database().ref(`Users/${user.uid}`);
+    if(firstName){
+      userRef.update({FirstName: firstName})
+    }
+    if(lastName){
+      userRef.update({LastName: lastName})
+    }
     if(accountHandle){
       firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")
       .then((snapshot) => {
@@ -129,7 +133,7 @@ export function submitProfileChanges({accountHandle, picture}, callback){
             addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()));
 
             const updates = {}
-            updates['/Users/'+user.uid+'/accountHandle'] = accountHandle;
+            updates['/Users/'+user.uid+'/AccountHandle'] = accountHandle;
             firebaseApp.database().ref().update(updates);
             user.updateProfile({
               displayName: accountHandle,

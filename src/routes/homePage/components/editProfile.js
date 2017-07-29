@@ -94,13 +94,32 @@ class Editable extends Component {
                     />
                   </div>
                   <div className="info">
-                    <div className="title">
+                    <div className="title row">
                       <Field
-                        label={user.accountHandle}
+                        label={user.AccountHandle}
                         inputType="text"
                         name="accountHandle"
                         inputClassName="glyphicon glyphicon-user"
                         component={renderField} />
+                      <Field
+                        label={user.FirstName ? user.FirstName : 'First Name'}
+                        inputType="firstName"
+                        name="firstName"
+                        inputClassName="glyphicon glyphicon-user"
+                        component={renderField} />
+                      <Field
+                        label={user.LastName ? user.LastName : 'Last Name'}
+                        inputType="text"
+                        name="lastName"
+                        inputClassName="glyphicon glyphicon-user"
+                        component={renderField} />
+                      <div  className="form-group col-xs-12 col-sm-12 col-md-8">
+                        <h4>Gender</h4>
+                        <div>
+                          <h6><Field name="sex" component="input" type="radio" value="male"/> Male</h6>
+                          <h6><Field name="sex" component="input" type="radio" value="female"/> Female</h6>
+                        </div>
+                      </div>
                     </div>
                     <div className="desc"></div>
                     <div className="desc"></div>

@@ -17,7 +17,7 @@ const NonEditable = props => {
             </div>
             <div className="info">
               <div className="title">
-                  {user.accountHandle}
+                  {user.AccountHandle}
               </div>
               <div className="desc"></div>
               <div className="desc"></div>

@@ -17,16 +17,16 @@ class PostShow extends Component {
   render() {
     const { post } = this.props;
     return (
-      <div>
+      <div className="row">
         {post ?
-          <div>
-
+          (<div className="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8">
+            {post.CardInfo.ImgSrc && <img src={post.CardInfo.ImgSrc}/>}
             <h1>{post.CardInfo.Title}</h1>
 
             <p>{post.Body}</p>
             <button className="btn btn-danger" onClick={this.handleDelete.bind(this)}>Delete</button>
-          </div>
-          : <div>Loading this post</div>
+          </div>)
+          : (<div>Loading this post</div>)
         }
       </div>
     );
