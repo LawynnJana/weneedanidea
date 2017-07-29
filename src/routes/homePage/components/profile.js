@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { firebaseApp } from '../../../firebase';
 import Editable from './editProfile'
+import './profile.css';
 
+const getDob = date => {
+  const months = ['Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const dob = new Date(date);
+  return dob.getDate() + ' ' + months[dob.getMonth()] + ' ' + dob.getFullYear();
+}
 const NonEditable = props => {
   const { user, onclick } = props;
   return (
@@ -19,9 +25,10 @@ const NonEditable = props => {
               <div className="title">
                   {user.AccountHandle}
               </div>
-              <div className="desc"></div>
-              <div className="desc"></div>
-              <div className="desc"></div>
+              {user.FirstName &&   <div className="desc">{user.FirstName}</div>}
+              {user.LastName &&   <div className="desc">{user.LastName}</div>}
+              {user.Gender &&   <div className="desc">{user.Gender}</div>}
+              {user.DateOfBirth && <div className="desc">Date of Birth: {getDob(user.DateOfBirth)}</div>}
             </div>
             <div className="bottom">
                   <a className="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/">

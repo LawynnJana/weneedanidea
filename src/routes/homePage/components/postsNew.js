@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 import { createPost, fetchSubcategory } from '../actions';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import _ from 'lodash';
-
 import NavbarNewPost from './navbarNewPost.js';
-//import 'react-widgets/dist/css/react-widgets.css'
+import './postsNew.css';
 
 const categories = [ { category: 'Cooking', value: 'cooking' },
   { category: 'Sports', value: 'sports' },
@@ -164,7 +163,6 @@ class PostsNew extends Component {
       this.props.history.push('/');
     });
   }
-
 
   render() {
     //passed by redux-form

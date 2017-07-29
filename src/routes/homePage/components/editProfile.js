@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { submitProfileChanges } from '../actions';
 import { Field, reduxForm } from 'redux-form';
 import { withRouter } from 'react-router-dom';
+import './profile.css';
+import './editProfile.css';
 
 const renderField = field => {
   const { meta: {touched, error} } = field;

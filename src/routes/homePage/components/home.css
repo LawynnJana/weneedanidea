@@ -1,0 +1,8 @@
+.panel > .panel-heading {
+  color: white!;
+  background-color: #41b3bd !important;
+  border-color: ##f2f2f2 !important;
+}
+.panel > .panel-heading > .panel-title{
+  color: #f2f2f2 !important;
+}

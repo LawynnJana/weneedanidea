@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import './postList.css';
 
 class PostList extends Component {
   constructor(props){

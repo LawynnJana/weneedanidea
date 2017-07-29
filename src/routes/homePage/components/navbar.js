@@ -3,6 +3,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from '../actions';
 
+import './navbar.css';
+
 class NavBar extends Component {
   constructor(props){
     super(props)
@@ -30,7 +32,7 @@ class NavBar extends Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <Link className="navbar-brand" to="/"><strong>TeachMe</strong></Link>
+            <Link className="navbar-brand" to="/">TeachMe</Link>
           </div>
           <div className="collapse navbar-collapse" id="navbar-collapse-3">
             <ul className="nav navbar-nav navbar-right">

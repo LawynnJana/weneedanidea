@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from '../actions';
+import './navbar.css';
 
 class NavbarNewPost extends Component {
   constructor(props){

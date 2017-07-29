@@ -4,6 +4,7 @@ import { logOut } from '../actions'
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import NewsFeed from './newsFeed';
+import './home.css';
 
 class Home extends Component {
 
