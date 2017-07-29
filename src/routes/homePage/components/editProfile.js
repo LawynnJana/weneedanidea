@@ -113,7 +113,7 @@ class Editable extends Component {
                         name="lastName"
                         inputClassName="glyphicon glyphicon-user"
                         component={renderField} />
-                      <div  className="form-group col-xs-12 col-sm-12 col-md-8">
+                      <div  className="form-group col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
                         <h4>Gender</h4>
                         <div>
                           <h6><Field name="sex" component="input" type="radio" value="male"/> Male</h6>
