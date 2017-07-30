@@ -18,3 +18,12 @@
   font-size: 20px;
   letter-spacing: .5px;
 }
+
+#postShow .footer {
+  /*margin-bottom: 20px;*/
+}
+#postShow .footer span {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+}
