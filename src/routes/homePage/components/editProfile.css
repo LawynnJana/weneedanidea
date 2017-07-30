@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-.react-datepicker-popper {
+#edit .react-datepicker-popper {
   z-index: 999 !important;
   transform: translate3d(189px, 251px, 0px) !important;
 }
@@ -13,7 +13,7 @@
   margin-bottom: 5px;
 }
 
-.button {
+#edit .button {
      display: inline-block;
      position: relative;
      width: 90px;
@@ -24,10 +24,10 @@
      background-color: #fff;
      color: #646464;
    }
-.button span {
+#edit .button span {
   /*padding-bottom: ;*/
 }
-.button.raised {
+#edit .button.raised {
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   transition-delay: 0.2s;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .8);

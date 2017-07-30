@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Link, withRouter } from 'react-router-dom';
 import { loginRequest } from './actions'
 import { firebaseApp } from '../../firebase';
+import './indexLogin.css';
 
 class Login extends Component {
   constructor(props){
@@ -61,7 +62,7 @@ class Login extends Component {
   render() {
     const { handleSubmit } = this.props;
     return(
-      <div className="row">
+      <div className="row" id="login">
         <div className="col-md-8 col-md-offset-2 col-lg-8">
           <div className="panel panel-default">
             <div className="panel-heading">
@@ -86,8 +87,8 @@ class Login extends Component {
                 </Field>
                 <div className="text-help">{this.props.status.error === true ? this.props.status.message : ''}</div>
                 <div className="btn-toolbar">
-                    <button type="submit" className="btn btn-info">Login</button>
-                    <Link className="btn btn-warning pull-right" to="/register">Register</Link>
+                    <button type="submit" className="btn button raised" style={{backgroundColor: '#3f51b5', color: 'white'}} >Login</button>
+                    <button className="btn button raised" style={{backgroundColor: '#ec407a'}}><Link to="/register" style={{ color: 'white'}}>Register</Link></button>
                 </div>
               </form>
             </div>

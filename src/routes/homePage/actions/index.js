@@ -188,7 +188,7 @@ export function createPost({title, category, content, subcategory, image}, callb
         Shares: 0,
       },
     });
-    
+
     let imgSrc = null;
     if(image){
       const imgRef = firebaseApp.storage().ref(`${uid}/posts/pictures/${postsRefKey}`);
@@ -305,7 +305,7 @@ export function fetchPosts(callback){
 export function deletePost(postId, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
-    firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`).remove().then(() => fetchPosts()).then(()=> callback());
+    firebaseApp.database().ref(`Users/${user.uid}/Posts/${postId}`).remove().then(() => fetchPosts()).then(()=> callback());
   }
 }
 

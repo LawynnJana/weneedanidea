@@ -1,0 +1,20 @@
+
+@import url('https://fonts.googleapis.com/css?family=Lora');
+#postShow {
+  font-family: Lora, 'Helvetica Neue', Helvetica;
+}
+
+#postShow .img-main{
+  display: block !important;
+  margin: auto;
+  min-height: 200px;
+  max-height: 300px;
+  width: auto;
+  position: relative;
+  margin-top:-20px;
+}
+
+#postShow p {
+  font-size: 20px;
+  letter-spacing: .5px;
+}

@@ -4,17 +4,84 @@
       ".read": "auth != null",
       ".write": "auth != null"
     },
+    "Posts":{
+      "$category": {
+        "$subcategory": {
+          "NumActivePosts": {
+            ".validate": "data.val() === newData.val() + 1 || newData.val() === data.val() + 1"
+          },
+          "NumDeletedPosts": {
+            ".validate": "data.val() === newData.val() + 1 || newData.val() === data.val() + 1"
+          },
+          "NumDraftPosts": {
+            ".validate": "data.val() === newData.val() + 1 || newData.val() === data.val() + 1"
+          },
+          "Active": {
+            "$postID": {
+              "CardInfo": {
+                "Likes": {
+                  ".write": "auth != null",
+                  ".validate": "!data.exists() || (data.val() === newData.val() + 1 || newData.val() === data.val() + 1)"
+                },
+                "Dislikes": {
+                  ".write": "auth != null",
+                  ".validate": "!data.exists() || (data.val() === newData.val() + 1 || newData.val() === data.val() + 1)"
+                },
+                "Shares": {
+                  ".write": "auth != null",
+                  ".validate": "!data.exists() || (data.val() === newData.val() + 1 || newData.val() === data.val() + 1)"
+                },
+                ".indexOn": ["Likes", "Dislikes", "Shares"]
+              },
+              ".write": "auth.uid === data.child('UserID').val() || !data.exists()"
+            },
+            ".read": "auth != null",
+      			".write": "auth != null"
+          }
+        }
+      }
+    },
     "Users": {
       "$uid": {
-        "posts": {
-          ".read": "auth != null",
-          ".write": "auth != null",
-          ".indexOn": [
-            "likes"
-          ]
+        "Posts": {
+          "NumActivePosts": {
+            ".validate": "data.val() === newData.val() + 1 || newData.val() === data.val() + 1"
+          },
+          "NumDeletedPosts": {
+            ".validate": "data.val() === newData.val() + 1 || newData.val() === data.val() + 1"
+          },
+          "NumDraftPosts": {
+            ".validate": "data.val() === newData.val() + 1 || newData.val() === data.val() + 1"
+          },
+          "Active": {
+            "$postID": {
+              "Statistics": {
+                "Likes": {
+                  ".validate": "!data.exists() || (data.val() === newData.val() + 1 || newData.val() === data.val() + 1)"
+                },
+                "Dislikes": {
+                  ".validate": "!data.exists() || (data.val() === newData.val() + 1 || newData.val() === data.val() + 1)"
+                },
+                "Shares": {
+                  ".validate": "!data.exists() || (data.val() === newData.val() + 1 || newData.val() === data.val() + 1)"
+                },
+                ".write": "auth != null",
+                ".indexOn": ["Likes", "Dislikes", "Shares"]
+              },
+              ".read": "auth != null",
+              ".write": "$uid === auth.uid && (!data.exists() || !newData.exists())"
+            }
+          }
         },
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid && (!data.exists() || newData.child('creationDate').val() === data.child('creationDate').val())"
+        "VerificationDate": {
+          ".read": false,
+        	".write": "$uid === auth.uid && !data.exists()"
+        },
+        "DateOfBirth": {
+        	".write": "$uid === auth.uid && !data.exists()"
+        },
+        ".read": "auth != null",
+        ".write": "$uid === auth.uid || !data.exists()"
       },
       ".read": false,
       ".write": false

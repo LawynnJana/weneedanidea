@@ -129,8 +129,7 @@ class PostsNew extends Component {
     });
 
     //reset form
-    this.props.dispatch(change('PostsNewForm', 'subcategory', ''))
-
+    this.props.dispatch(change('PostsNewForm', 'subcategory', ''));
   }
 
   handleImageAdd(event, newValue){
@@ -147,12 +146,14 @@ class PostsNew extends Component {
 
   renderDropdownList ({ input, data, valueField, textField }){
     return (
+      <div className="col-md-6">
       <DropdownList {...input}
         className="form-group"
         data={data}
         valueField={valueField}
         textField={textField}
         onChange={input.onChange} />
+    </div>
     );
   }
 
@@ -169,7 +170,7 @@ class PostsNew extends Component {
     return (
       <div>
         <NavbarNewPost/>
-        <div className="new-post row">
+        <div className="new-post row" id="newpost">
           <div className="col-md-8 col-md-offset-2">
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
               <Field
@@ -184,22 +185,24 @@ class PostsNew extends Component {
                 onChange={this.handleImageAdd.bind(this)}
               />
               <label>Category</label>
-              <Field
-               name="category"
-               component={this.renderDropdownList.bind(this)}
-               data={categories}
-               valueField="value"
-               textField="category"
-               onChange={this.changeSubcategories.bind(this)}
-               />
-              <Field
-                label="Subcategory"
-                name="subcategory"
-                component={this.renderDropdownList.bind(this)}
-                data={subcategory}
-                valueField="value"
-                textField="subcategory"
-              />
+              <div className="row">
+                <Field
+                 name="category"
+                 component={this.renderDropdownList.bind(this)}
+                 data={categories}
+                 valueField="value"
+                 textField="category"
+                 onChange={this.changeSubcategories.bind(this)}
+                 />
+                <Field
+                  label="Subcategory"
+                  name="subcategory"
+                  component={this.renderDropdownList.bind(this)}
+                  data={subcategory}
+                  valueField="value"
+                  textField="subcategory"
+                />
+              </div>
               { imgSrc !== '' && (<img src={imgSrc}/>) }
               <Field
                 placeholder="Write your story here..."
@@ -207,8 +210,10 @@ class PostsNew extends Component {
                 type="text"
                 component={this.renderTextAreaField}
                />
-              <button type="submit" className="btn btn-default">Submit</button>
-              <Link to="/" className="btn btn-danger">Cancel</Link>
+              <div className="btn-toolbar">
+                <button className="btn button raised" type="submit" style={{color:'#3f51b5'}} >Submit</button>
+                <button className="btn button raised"><Link to="/" style={{color:'#e53935'}}>Cancel</Link></button>
+              </div>
             </form>
           </div>
         </div>

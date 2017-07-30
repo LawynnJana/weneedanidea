@@ -15,6 +15,7 @@ class PostList extends Component {
 
   renderPosts(){
     let posts = _.values(this.props.posts);
+    console.log(this.props.posts);
     // Sort posts based on selection
     if(this.props.type === 'new'){
      _.sortBy(posts, 'creationTime');

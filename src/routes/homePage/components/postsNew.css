@@ -5,9 +5,13 @@
 }
 .new-post input{
   border: 0;
+  border-radius: 0;
   font-size: 40px;
+  text-align: left;
+  box-sizing: border-box;
   font-family: Roboto, Tahoma, 'Helvetica Neue', Helvetica;
   margin-left: -12px;
+  /*border-right: 4px solid #3f51b5;*/
 }
 
 .new-post .post-img:hover{
@@ -26,19 +30,13 @@
   border: 0;
   font-size: 20px;
   font-family: Baskerville, 'Helvetica Neue', Helvetica, sans-serif;
-  height: 150px;
+  height: 300px;
 }
-
-input {
-  border: 0;
-  outline: none !important;
-}
-
 
 .rw-dropdownlist {
   outline: none;
   border: 0px;
-  border-bottom: 1px solid black;
+  border-right: 4px solid #3f51b5;
   border-radius: 0;
   /*display*/
 }
@@ -50,4 +48,39 @@ input {
 }
 .rw-state-focus: hover {
   border: 0px;
+}
+
+#newpost .button {
+  padding: 0;
+  border: none;
+  display: inline-block;
+  position: relative;
+  width: 90px;
+  height:28px;
+  line-height: 28px;
+  border-radius: 2px;
+  font-size: 15px;
+  background-color: #fff;
+  color: #646464;
+  text-align: center;
+ }
+
+#newpost .button a {
+  text-decoration: none;
+}
+#newpost .button span {
+  /*padding-bottom: ;*/
+}
+#newpost .button.raised {
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .8);
+}
+
+#newpost .button {
+  margin-top: 10px;
+  color: black;
+  font-family: Roboto, 'Helvetica Neue', Helvetica;
+  letter-spacing: .8px;
+  text-transform: uppercase;
 }
