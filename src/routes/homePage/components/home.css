@@ -1,8 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
 .panel > .panel-heading {
   color: white!;
+  font-family: 'Helvetica Neue' ,Helvetica !important;
+  font-size: 14px;
   background-color: #41b3bd !important;
   border-color: ##f2f2f2 !important;
 }
 .panel > .panel-heading > .panel-title{
   color: #f2f2f2 !important;
+}
+
+.btn-newpost{
+  border-color: rgb(111, 84, 153);
 }

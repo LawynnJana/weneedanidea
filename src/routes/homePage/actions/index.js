@@ -153,6 +153,7 @@ export function submitProfileChanges({accountHandle, picture, firstName, lastNam
         }
       });
     }
+    //alert('Changes saved!');
   }
 }
 

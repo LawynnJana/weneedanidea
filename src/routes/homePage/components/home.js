@@ -25,8 +25,8 @@ class Home extends Component {
               <h3 className="panel-title">Welcome {user.AccountHandle}! </h3>
             </div>
             <div className="panel-body">
+              <Link className="btn btn-default btn-newpost" to='/user/new'>Write Something</Link>
               <NewsFeed/>
-              <Link className="btn btn-default" to='/user/new'>Create Post</Link>
             </div>
           </div>
         </div>

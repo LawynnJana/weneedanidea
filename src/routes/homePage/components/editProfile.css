@@ -2,3 +2,7 @@
   z-index: 999 !important;
   transform: translate3d(189px, 251px, 0px) !important;
 }
+
+.cardheader button {
+  margin-top: 10px;
+}
