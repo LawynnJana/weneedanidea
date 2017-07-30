@@ -1,19 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Dosis');
-
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 .panel > .panel-heading {
-  color: white!;
-  font-family: 'Helvetica Neue' ,Helvetica !important;
-  font-size: 14px;
-  background-color: #9D9DBD !important;
+  background-color: #3f51b5 !important;
   border-color: ##f2f2f2 !important;
 }
 .panel > .panel-heading > .panel-title{
-  color: #f2f2f2 !important;
+  color: white !important;
   letter-spacing: 1px !important;
-  font-family: 'Helvetica Neue' ,Helvetica !important;
+  font-family: Roboto, 'Helvetica Neue' ,Helvetica !important;
 }
 
 .btn-newpost{
   border: 1px solid rgb(111, 84, 153);
+  font-family: Roboto, 'Helvetica Neue' ,Helvetica !important;
   border-radius: 55px;
 }

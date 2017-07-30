@@ -75,7 +75,6 @@ const FileInput = ({
 class PostsNew extends Component {
   constructor(props){
     super(props);
-    //this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.state = {
       subcategory: [],
       imgSrc: '',
@@ -89,7 +88,6 @@ class PostsNew extends Component {
   renderInputField(field) {
     const { meta: { touched, error } } = field;
     const className = `form-group ${touched && error ? 'has-danger' : ''}`
-
     return (
       <div className={className}>
         <input

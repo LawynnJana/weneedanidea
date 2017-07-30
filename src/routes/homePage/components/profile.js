@@ -16,7 +16,7 @@ const NonEditable = props => {
       <div className="row">
         <div className="col-sm-12 col-md-6 col-md-offset-3">
           <div className="card hovercard">
-            <div className="cardheader" style={{background: '#9D9DBD'}}>
+            <div className="cardheader" style={{background: '#5c6bc0'}}>
               <button onClick={onclick} className="btn btn-default btn-edit">Edit Profile</button>
             </div>
             <div className="avatar">

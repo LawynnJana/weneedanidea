@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Pacifico');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 .navbar .navbar-brand {
   font-family: 'Pacifico', cursive, sans-serif !important;
 }
@@ -21,15 +22,17 @@
 .btn.btn-circle { border-radius: 50px; }
 .btn.btn-outline { background-color: transparent; }
 .navbar .collapsed, .navbar-toggle {
-  background: #6f5f5f !important;
+  background: white !important;
+  border: 1px solid #3a4e58;
 }
 .navbar .collapsed span, .navbar-toggle span {
-  background: white;
+  background: #3a4e58;
 }
 
 .navbar-nav.navbar-right>li>a{
   text-transform: uppercase;
   text-decoration: none;
+  font-family: Roboto, 'Helvetica Neue', Helvetica;
   color: #3a4e58;
 }
 .navbar-nav.navbar-right>li>a:hover {
