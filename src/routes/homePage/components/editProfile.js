@@ -12,7 +12,7 @@ const renderField = field => {
   return (
     <div className="form-group col-xs-8 col-sm-4 col-sm-offset-4 col-xs-offset-2 col-md-8 col-md-offset-2">
       <div className="input-group">
-        <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName && field.inputClassName}></i></span>
+        <span className="input-group-addon" style={{color: '#5c6bc0', background: 'white'}} id="sizing-addon1"><i className={field.inputClassName && field.inputClassName}></i></span>
         <input
           type={field.inputType}
           className="form-control input-sm"
@@ -79,12 +79,12 @@ class Editable extends Component {
     const { user, onclick } = this.props;
     console.log("user",user);
     return (
-      <div className="container">
+      <div className="container" id="edit">
         <div className="row">
           <div className="col-sm-12 col-md-6 col-md-offset-3">
             <div className="card hovercard">
               <div className="cardheader" style={{background: '#5c6bc0'}}>
-                <button onClick={onclick} className="btn btn-default">Edit Profile</button>
+                <div onClick={onclick} className="button raised"><span>Done</span></div>
               </div>
               <form onSubmit={handleSubmit(this.handleProfileSubmit.bind(this))}>
                   <div className="row avatar">
@@ -132,7 +132,7 @@ class Editable extends Component {
                     <div className="desc"></div>
                   </div>
                   <div className="cardfooter">
-                    <button className="btn btn-primary" type="submit">Save</button>
+                    <button className="btn btn-primary" style={{color: 'white', background: '#5c6bc0', marginTop: '-25px'}} type="submit">Save</button>
                   </div>
               </form>
             </div>

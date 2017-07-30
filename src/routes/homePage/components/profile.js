@@ -9,15 +9,16 @@ const getDob = date => {
   return dob.getDate() + ' ' + months[dob.getMonth()] + ' ' + dob.getFullYear();
 }
 const NonEditable = props => {
+  //<button onClick={onclick} className="btn btn-default btn-edit">Edit Profile</button>
   const { user, onclick } = props;
   const genderClass = `fa ${(user.Gender === 'Other') ? ('fa-genderless') : ((user.Gender === 'Male') ? 'fa-mars' : 'fa-venus')}`;
   return (
-    <div className="container">
+    <div className="container" id="edit">
       <div className="row">
         <div className="col-sm-12 col-md-6 col-md-offset-3">
           <div className="card hovercard">
             <div className="cardheader" style={{background: '#5c6bc0'}}>
-              <button onClick={onclick} className="btn btn-default btn-edit">Edit Profile</button>
+              <div onClick={onclick} className="button raised"><span>Edit</span></div>
             </div>
             <div className="avatar">
                 <img alt="" src={user.photoURL}/>
@@ -76,22 +77,23 @@ class Profile extends Component {
     console.log("get source")
     return firebaseApp.storage().ref().child('images/default_profile_img.png').getDownloadURL().then((url) => {
       console.log("success", url);
-      return url
+      return url;
     })
-
   }
+
   editProfile(){
     console.log("edit");
     this.setState({
       edit: !this.state.edit
     })
   }
+
   render() {
     return (<div>
       {
         this.state.edit ?
-        <Editable {...this.props} onclick={this.editProfile}/>
-        :<NonEditable {...this.props} onclick={this.editProfile}/>
+        (<Editable {...this.props} onclick={this.editProfile}/>):
+        (<NonEditable {...this.props} onclick={this.editProfile}/>)
       }
     </div>);
   }
