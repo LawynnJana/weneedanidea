@@ -83,7 +83,7 @@ class Editable extends Component {
         <div className="row">
           <div className="col-sm-12 col-md-6 col-md-offset-3">
             <div className="card hovercard">
-              <div className="cardheader" style={{background: '#8FEEE1'}}>
+              <div className="cardheader" style={{background: '#9D9DBD'}}>
                 <button onClick={onclick} className="btn btn-default">Edit Profile</button>
               </div>
               <form onSubmit={handleSubmit(this.handleProfileSubmit.bind(this))}>
@@ -106,13 +106,13 @@ class Editable extends Component {
                         label={user.FirstName ? user.FirstName : 'First Name'}
                         inputType="firstName"
                         name="firstName"
-                        inputClassName="glyphicon glyphicon-user"
+                        inputClassName="fa fa-user-o"
                         component={renderField} />
                       <Field
                         label={user.LastName ? user.LastName : 'Last Name'}
                         inputType="text"
                         name="lastName"
-                        inputClassName="glyphicon glyphicon-user"
+                        inputClassName="fa fa-user-o"
                         component={renderField} />
                       <div  className="form-group col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
                         <h4>Gender</h4>
@@ -124,7 +124,7 @@ class Editable extends Component {
                       <Field
                         inputType="date"
                         name="dateOfBirth"
-                        inputClassName="glyphicon glyphicon-user"
+                        inputClassName="fa fa-birthday-cake"
                         component={renderField} />
                     </div>
                     <div className="desc"></div>

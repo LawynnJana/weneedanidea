@@ -18,4 +18,10 @@ class NewsFeed extends Component{
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    
+  }
+}
+
 export default connect(null, {})(NewsFeed);

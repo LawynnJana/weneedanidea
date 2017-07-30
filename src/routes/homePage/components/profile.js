@@ -16,7 +16,7 @@ const NonEditable = props => {
       <div className="row">
         <div className="col-sm-12 col-md-6 col-md-offset-3">
           <div className="card hovercard">
-            <div className="cardheader" style={{background: '#8FEEE1'}}>
+            <div className="cardheader" style={{background: '#9D9DBD'}}>
               <button onClick={onclick} className="btn btn-default btn-edit">Edit Profile</button>
             </div>
             <div className="avatar">
@@ -24,11 +24,11 @@ const NonEditable = props => {
             </div>
             <div className="info">
               <div className="title">
-                  {user.AccountHandle}
+               {user.AccountHandle}
               </div>
-              {user.FirstName &&   <span className="">{user.FirstName} </span>}
-              {user.LastName &&   <span className="">{user.LastName}</span>}
-              {user.Gender &&   <div className=""><i className={genderClass} aria-hidden="true"></i>{user.Gender}</div>}
+              {user.FirstName && <span className=""><i className="fa fa-user-o" aria-hidden="true"></i> {user.FirstName} </span>}
+              {user.LastName && <span className="">{user.LastName}</span>}
+              {user.Gender && <div className=""><i className={genderClass} aria-hidden="true"></i> {user.Gender}</div>}
               {user.DateOfBirth && <div className=""><i className="fa fa-birthday-cake" aria-hidden="true"></i> {getDob(user.DateOfBirth)}</div>}
             </div>
             <div className="bottom">

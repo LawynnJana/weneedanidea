@@ -22,7 +22,7 @@ class Home extends Component {
         <div className="col-xs-12 col-md-12 col-sm-12">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <div className="panel-title">Welcome {user.AccountHandle}! </div>
+              <div className="panel-title">{user.AccountHandle} </div>
             </div>
             <div className="panel-body">
               <Link className="btn btn-default btn-newpost" to='/user/new'>Write Something</Link>

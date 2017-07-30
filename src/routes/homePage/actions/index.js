@@ -97,7 +97,6 @@ export function logOut(cb){
 export function submitProfileChanges({accountHandle, picture, firstName, lastName, dateOfBirth, gender}, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
-
     if(picture){
       const ref = firebaseApp.storage().ref(user.uid+'/profile/profile_pic');
       ref.put(picture).then(()=>{
@@ -189,8 +188,8 @@ export function createPost({title, category, content, subcategory, image}, callb
         Shares: 0,
       },
     });
+    
     let imgSrc = null;
-
     if(image){
       const imgRef = firebaseApp.storage().ref(`${uid}/posts/pictures/${postsRefKey}`);
       imgRef.put(image).then(()=>{
