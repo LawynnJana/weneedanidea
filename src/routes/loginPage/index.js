@@ -21,21 +21,15 @@ class Login extends Component {
   componentDidMount() {
     // reset error state for when user goes back (erases the error messages)
     this.props.loginRequest("resetState");
-
   }
 
   //Returns a component for a Field
   renderField(field) {
-
-    // touched is an indicator if the field was ever clicked on
-    // error is true if validate() returned errors
     const { meta: {touched, error} } = field;
-
     // If field was touched and user input isn't satisfied, add has-danger to class
     const className = `text-help ${touched && error ? 'has-danger' : ''}`
     return (
       <div className="form-group">
-
         <div className="input-group">
           <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName}></i></span>
           <input
@@ -45,7 +39,6 @@ class Login extends Component {
             aria-describedby="sizing-addon1"
             {...field.input}
           />
-
         </div>
         <div className={className}>
           {touched ? error  : ''}
@@ -66,14 +59,8 @@ class Login extends Component {
 
   }
   render() {
-
-    // handleSubmit passed by redux-router, calls validate() on submitting
     const { handleSubmit } = this.props;
-
     return(
-
-      // <Field>'s name is connected to the form object
-      // the name is then used to validate the field item (i.e. empty)
       <div className="row">
         <div className="col-md-8 col-md-offset-2 col-lg-8">
           <div className="panel panel-default">
@@ -102,7 +89,6 @@ class Login extends Component {
                     <button type="submit" className="btn btn-info">Login</button>
                     <Link className="btn btn-warning pull-right" to="/register">Register</Link>
                 </div>
-
               </form>
             </div>
           </div>

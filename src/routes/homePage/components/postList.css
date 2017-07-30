@@ -11,23 +11,27 @@
 	-webkit-box-shadow: 0px 0.5px 1px 0px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 0.5px 1px 0px rgba(0,0,0,0.75);
 	box-shadow: 0px 0.5px 1px 0px rgba(0,0,0,0.75);
+  height: 300px;
 }
 
-.card .thumnail: hover{
-
+.card .thumbnail:hover{
+ opacity: .8;
 }
+
+.thumbnail > img {
+  height:150px !important;
+  width: auto;
+  /*opacity: inherit;*/
+}
+
 .card .thumbnail .caption{
 	/*margin: -20px 20px 20px 20px;*/
 	padding: 19px 0px 19px 0px;
 	position: relative;
 	background-color: white;
+  margin-top: 10px;
 }
 
-.thumbnail > img {
-  height:200px !important;
-  width: auto;
-
-}
 .card .thumbnail .caption h3 small{
 	font-style: italic;
 	text-transform: none;
@@ -54,4 +58,8 @@
 .card .thumbnail .caption p{
 	font-size: 12px;
 	line-height: 1.6;
+}
+
+.footer {
+  /*margin-top: 30px;*/
 }

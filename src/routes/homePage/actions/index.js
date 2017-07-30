@@ -15,7 +15,6 @@ export function fetchUser(uid){
     const user = firebaseApp.auth().currentUser;
     const email = user.email;
     const photoURL = user.photoURL;
-    console.log("fetch user");
     firebaseApp.database().ref('Users/'+uid).once("value").
     then((snapshot) => {
       const temp = Object.assign({email, photoURL}, snapshot.val());
@@ -23,7 +22,6 @@ export function fetchUser(uid){
         type: FETCH_USER,
         payload: temp
       });
-
     });
   }
 }
@@ -42,6 +40,7 @@ function addToUserDB(accountHandle, ref){
 function addAccHandleToDb(accountHandle, userRef){
   userRef.set(accountHandle)
 }
+
 //register stuff
 export function submitUserHandle( { accountHandle } , callback){
   return dispatch => {
@@ -84,7 +83,6 @@ export function logOut(cb){
     }, (error) => {
       console.log("Error signing out: ", error);
     })
-
     dispatch({
       type: LOGOUT,
       payload: {
@@ -113,18 +111,26 @@ export function submitProfileChanges({accountHandle, picture, firstName, lastNam
       });
     }
     const userRef =firebaseApp.database().ref(`Users/${user.uid}`);
+    //cont promise;
     if(firstName){
+      //promist = userRef...
       userRef.update({FirstName: firstName});
+      dispatch(fetchUser(user.uid));
     }
     if(lastName){
       userRef.update({LastName: lastName});
+      dispatch(fetchUser(user.uid));
     }
     if(gender){
       userRef.update({Gender: gender});
+      dispatch(fetchUser(user.uid));
     }
     if(dateOfBirth){
       userRef.update({DateOfBirth: dateOfBirth});
+      dispatch(fetchUser(user.uid));
     }
+    //if(promise.resolved) dispatch(fetchUser(user.uid));
+
     if(accountHandle){
       firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()).once("value")
       .then((snapshot) => {
@@ -133,7 +139,7 @@ export function submitProfileChanges({accountHandle, picture, firstName, lastNam
           alert("Account handle already exists!");
         } else {
           if(accountHandle === user.displayName){
-            alert("Same name! No change!");
+            alert("Same name. No change!");
           } else {
             firebaseApp.database().ref('AccountHandles/'+user.displayName.toLowerCase()).remove();
             addAccHandleToDb(accountHandle, firebaseApp.database().ref('AccountHandles/'+accountHandle.toLowerCase()));
@@ -153,7 +159,7 @@ export function submitProfileChanges({accountHandle, picture, firstName, lastNam
         }
       });
     }
-    //alert('Changes saved!');
+    alert('Changes saved!');
   }
 }
 
@@ -303,7 +309,6 @@ export function deletePost(postId, callback){
     firebaseApp.database().ref(`Users/${user.uid}/posts/${postId}`).remove().then(() => fetchPosts()).then(()=> callback());
   }
 }
-
 
 // news Feed
 export function fetchNewsFeed(){

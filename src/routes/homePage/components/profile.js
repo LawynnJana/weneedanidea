@@ -10,13 +10,14 @@ const getDob = date => {
 }
 const NonEditable = props => {
   const { user, onclick } = props;
+  const genderClass = `fa ${(user.Gender === 'Other') ? ('fa-genderless') : ((user.Gender === 'Male') ? 'fa-mars' : 'fa-venus')}`;
   return (
     <div className="container">
       <div className="row">
-        <div className="col-sm-12 col-md-8 col-md-offset-2">
+        <div className="col-sm-12 col-md-6 col-md-offset-3">
           <div className="card hovercard">
             <div className="cardheader" style={{background: '#8FEEE1'}}>
-              <button onClick={onclick} className="btn btn-default">Edit Profile</button>
+              <button onClick={onclick} className="btn btn-default btn-edit">Edit Profile</button>
             </div>
             <div className="avatar">
                 <img alt="" src={user.photoURL}/>
@@ -25,10 +26,10 @@ const NonEditable = props => {
               <div className="title">
                   {user.AccountHandle}
               </div>
-              {user.FirstName &&   <div className="desc">{user.FirstName}</div>}
-              {user.LastName &&   <div className="desc">{user.LastName}</div>}
-              {user.Gender &&   <div className="desc">{user.Gender}</div>}
-              {user.DateOfBirth && <div className="desc">Date of Birth: {getDob(user.DateOfBirth)}</div>}
+              {user.FirstName &&   <span className="">{user.FirstName} </span>}
+              {user.LastName &&   <span className="">{user.LastName}</span>}
+              {user.Gender &&   <div className=""><i className={genderClass} aria-hidden="true"></i>{user.Gender}</div>}
+              {user.DateOfBirth && <div className=""><i className="fa fa-birthday-cake" aria-hidden="true"></i> {getDob(user.DateOfBirth)}</div>}
             </div>
             <div className="bottom">
                   <a className="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/">

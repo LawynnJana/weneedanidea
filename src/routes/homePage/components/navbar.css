@@ -40,7 +40,8 @@
 .navbar-nav.navbar-right .btn:not(.collapsed) {
     background-color: inherit;
     text-transform: uppercase;
-    border-color: rgb(111, 84, 153);
+    border: 1px solid rgb(111, 84, 153);
+    border-radius: 65px;
     color: #3a4e58;
 }
 

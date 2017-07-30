@@ -1,0 +1,8 @@
+.nav.nav-tabs li>a {
+  color: #3a4e58 !important;
+  letter-spacing: 1px !important;
+}
+
+/*.nav.nav-tabs li .active {
+  background: red;
+}*/

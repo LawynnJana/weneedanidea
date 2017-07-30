@@ -9,8 +9,11 @@
 }
 .panel > .panel-heading > .panel-title{
   color: #f2f2f2 !important;
+  letter-spacing: 1px !important;
+  font-family: 'Helvetica Neue' ,Helvetica !important;
 }
 
 .btn-newpost{
-  border-color: rgb(111, 84, 153);
+  border: 1px solid rgb(111, 84, 153);
+  border-radius: 55px;
 }

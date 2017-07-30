@@ -163,6 +163,7 @@
     overflow: hidden;
     text-align: center;
     background-color: rgba(214, 224, 226, 0.2);
+    border: 1px solid rgb(111, 84, 153);
 }
 
 .card.hovercard .cardheader {
@@ -190,6 +191,7 @@
 
 .card.hovercard .info {
     padding: 4px 8px 10px;
+    letter-spacing: .3px;
 }
 
 .card.hovercard .info .title {
@@ -219,4 +221,8 @@
   cursor: pointer;
   border: solid 5px #A5DBEB;
 
+}
+
+.btn-edit {
+  border: 1px solid rgb(111, 84, 153);
 }

@@ -10,7 +10,7 @@ const renderField = field => {
   const { meta: {touched, error} } = field;
   const className = `text-help ${touched && error ? 'has-danger' : ''}`
   return (
-    <div className="form-group col-xs-8 col-sm-4 col-sm-offset-4 col-xs-offset-2">
+    <div className="form-group col-xs-8 col-sm-4 col-sm-offset-4 col-xs-offset-2 col-md-8 col-md-offset-2">
       <div className="input-group">
         <span className="input-group-addon" id="sizing-addon1"><i className={field.inputClassName && field.inputClassName}></i></span>
         <input
@@ -81,7 +81,7 @@ class Editable extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-sm-12 col-md-8 col-md-offset-2">
+          <div className="col-sm-12 col-md-6 col-md-offset-3">
             <div className="card hovercard">
               <div className="cardheader" style={{background: '#8FEEE1'}}>
                 <button onClick={onclick} className="btn btn-default">Edit Profile</button>
