@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 /* cards */
-.card *:hover{
+
+
+.postList .card *:hover{
 	text-decoration: none;
 }
 
-.card .thumbnail{
+.postList .card .thumbnail{
 	padding: 0;
 	border: none;
 	text-align: center;
@@ -14,17 +17,17 @@
   height: 300px;
 }
 
-.card .thumbnail:hover{
+.postList .card .thumbnail:hover{
  opacity: .8;
 }
 
-.thumbnail > img {
+.postList .thumbnail > img {
   height:150px !important;
   width: auto;
   /*opacity: inherit;*/
 }
 
-.card .thumbnail .caption{
+.postList .card .thumbnail .caption{
 	/*margin: -20px 20px 20px 20px;*/
 	padding: 19px 0px 19px 0px;
 	position: relative;
@@ -32,34 +35,34 @@
   margin-top: 10px;
 }
 
-.card .thumbnail .caption h3 small{
+.postList .card .thumbnail .caption h3 small{
 	font-style: italic;
 	text-transform: none;
 	letter-spacing: 0;
 	font-weight: 400;
-	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	font-family: Roboto,Helvetica,Arial,sans-serif;
 	display: block;
 	padding: 5px;
 }
 
-.card .thumbnail .caption h3{
-	font-family: 'Raleway',sans-serif;
+.postList .card .thumbnail .caption h3{
+	font-family: Roboto ,sans-serif;
 	font-weight: 600;
 	letter-spacing: -1px;
 	margin-top: 0;
 	font-size: 18px;
 }
 
-.card .thumbnail .caption hr{
+.postList .card .thumbnail .caption hr{
 	border-top: 1px solid #333;
 	margin: 10px 40px;
 }
 
-.card .thumbnail .caption p{
+.postList .card .thumbnail .caption p{
 	font-size: 12px;
 	line-height: 1.6;
 }
 
-.footer {
+.postList .footer {
   /*margin-top: 30px;*/
 }

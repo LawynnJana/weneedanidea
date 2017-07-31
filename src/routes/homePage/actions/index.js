@@ -301,11 +301,25 @@ export function fetchPosts(callback){
     });
   }
 }
-//post show stuff
+
+// Delete post from Posts/ and Users/
+// Decrement numActivePosts
 export function deletePost(postId, callback){
   return dispatch => {
     const user = firebaseApp.auth().currentUser;
-    firebaseApp.database().ref(`Users/${user.uid}/Posts/${postId}`).remove().then(() => fetchPosts()).then(()=> callback());
+    let postPath = null;
+    const refPost = firebaseApp.database().ref(`Users/${user.uid}/Posts/Active/${postId}`);
+    refPost.once('value').then((ss) => {
+      const { Location } = ss.val();
+      postPath = `Posts/${Location.Category}/${Location.SubCategory}/Active/${postId}`;
+      firebaseApp.database().ref(postPath).remove().then(() => refPost.remove().then(() => {
+        const numActivePostsRef = firebaseApp.database().ref(`Users/${user.uid}/Posts/NumActivePosts`);
+        numActivePostsRef.once('value').then((ss) => {
+          numActivePostsRef.set(ss.val()-1);
+        }).catch;((err) => console.error('Decrementing active posts counter:', err))
+        callback();
+      }));
+    }).catch(err => console.error('Error deleting post:', err));
   }
 }
 

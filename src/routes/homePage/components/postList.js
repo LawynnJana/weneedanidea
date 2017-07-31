@@ -63,7 +63,7 @@ class PostList extends Component {
     return (
       <div>
         { this.props.posts ?
-          (<div className="row">{this.renderPosts()}</div>):
+          (<div className="row postList">{this.renderPosts()}</div>):
           (<div>{console.log("No posts in list:", this.props.posts)}<div>No posts!</div></div>)
         }
       </div>

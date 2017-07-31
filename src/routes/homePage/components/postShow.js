@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPost, fetchPosts, deletePost } from '../actions'
+import { fetchPost, fetchPosts, deletePost, likePost } from '../actions'
 import { withRouter } from 'react-router-dom';
 import './postShow.css';
 
@@ -17,12 +17,6 @@ class Post extends Component {
 
   }
 
-  handleDelete(){
-    // this.props.deletePost(this.props.post.id, () => {
-    //   this.props.history.push('/user/posts');
-    // });
-  }
-
   render(){
     const { post } = this.props;
     return (
@@ -30,12 +24,14 @@ class Post extends Component {
         <div className="page-header">
           <h1>{post.CardInfo.Title}</h1>
         </div>
+        <div className="img-main">
+          {post.CardInfo.ImgSrc && <img src={post.CardInfo.ImgSrc}/>}
+        </div>
         <div>
-          {post.CardInfo.ImgSrc && <img className="img-main" src={post.CardInfo.ImgSrc}/>}
-          <p className="well">{post.Body}</p>
+          <p className="">{post.Body}</p>
         </div>
         <div className="footer">
-          { this.props.editable && <span style={{cursor: 'pointer'}} onClick={this.handleDelete.bind(this)}><i className="fa fa-trash-o fa-2x" aria-hidden="true"></i></span>}
+          { this.props.editable && <span style={{cursor: 'pointer'}} onClick={this.props.onDelete}><i className="fa fa-trash-o fa-2x" aria-hidden="true"></i></span>}
           <span style={{cursor: 'pointer'}} onClick={this.handleLike.bind(this)}><i className="fa fa-heart-o fa-2x" aria-hidden="true"></i></span>
           <span style={{cursor: 'pointer'}} onClick={this.handleShare.bind(this)}><i className="fa fa-share fa-2x" aria-hidden="true"></i></span>
         </div>
@@ -51,12 +47,18 @@ class PostShow extends Component {
     this.props.fetchPosts();
   }
 
+  handleDelete(){
+    this.props.deletePost(this.props.post.postId, () => {
+      this.props.history.push('/user/posts');
+    });
+  }
+
   render() {
     const { post } = this.props;
     return (
       <div className="row" id="postShow">
         {post ?
-          (<Post post={post} editable='true'/>)
+          (<Post post={post} editable='true' onDelete={this.handleDelete.bind(this)}/>)
           :(<div>Loading this post</div>)
         }
       </div>
@@ -70,4 +72,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, { fetchPost, fetchPosts, deletePost })(PostShow));
+export default withRouter(connect(mapStateToProps, { fetchPost, fetchPosts, deletePost})(PostShow));
