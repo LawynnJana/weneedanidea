@@ -5,17 +5,22 @@ import {
   updateLikes,
   updateShares
 } from '../actions'
+
 class Post extends Component {
   constructor(props) {
     super(props);
   }
-
+  componentWillMount() {
+    console.log('Obj', this.props.post);
+  }
   handleShare(){
 
   }
 
   handleLike(){
-
+    const { post } = this.props;
+    //if()
+    //this.props.updateLikes(post.postId, post.category, post.subcategory);
   }
 
   render(){

@@ -211,6 +211,8 @@ export function createPost({title, category, content, subcategory, image}, callb
             LastEditDate: CreationDate,
             Reports: 0,
             UserId: uid,
+            LikedBy: {},
+            SharedBy: {},
           });
         })
       })
@@ -280,7 +282,7 @@ export function fetchPosts(callback){
       const pathsToPosts = _.map(snapshot.val(), (post, key) => {
         const { Location: { Category, SubCategory } } = post;
         return firebaseApp.database().ref(`Posts/${Category}/${SubCategory}/Active/${key}`).once('value').then((ss) => {
-          return {...ss.val(), postId: key, creationTime: new Date(ss.val().CardInfo.CreationDate).getTime()};
+          return {...ss.val(), postId: key, category: Category, subcategory: SubCategory, creationTime: new Date(ss.val().CardInfo.CreationDate).getTime()};
         });
       });
       return Promise.all(pathsToPosts);
@@ -326,8 +328,15 @@ export function deletePost(postId, callback){
   }
 }
 
-export function updateLikes(postId){
-  
+export function updateLikes(postId, cat, subcat, value){
+  const { uid } = firebaseApp.auth().currentUser;
+  const path = `Posts/${cat}/${subcat}/Active/${postId}/CardInfo/Likes`;
+
+  const ref = firebaseApp.database.ref(path);
+  ref.once('value').then(ss => {
+    ref.set(ss.val() + value);
+  });
+  //const ref = firebaseApp.database(`Users/${user.uid}/Posts/Active/${postId}/Likes`).ref()
 }
 
 export function updateShares(postId){
