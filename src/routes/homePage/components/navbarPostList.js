@@ -3,7 +3,7 @@ import { Route, Link, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PostList from './postList';
 import { fetchPosts } from '../actions';
-import './posts.css';
+import './navbarPostList.css';
 
 class Posts extends Component {
   constructor(props){

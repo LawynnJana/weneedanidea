@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { firebaseApp } from '../../../firebase';
-import Editable from './editProfile'
+import Editable from './profileEdit'
 import './profile.css';
 
 const getDob = date => {

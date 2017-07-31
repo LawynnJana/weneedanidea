@@ -7,7 +7,7 @@ import { Switch, Route, Link, withRouter } from 'react-router-dom';
 
 import NavBar from './components/navbar';
 import Home from './components/home';
-import Posts from './components/posts';
+import Posts from './components/navbarPostList';
 import PostsNew from './components/postsNew';
 import UserProfile from './components/profile';
 import UserHandle from './components/userHandle';

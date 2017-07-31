@@ -162,6 +162,7 @@ export function submitProfileChanges({accountHandle, picture, firstName, lastNam
   }
 }
 
+//const pad = n => { return n < 10 ? '0'+n : n }
 // Creating new posts
 export function createPost({title, category, content, subcategory, image}, callback){
   return dispatch => {
@@ -172,6 +173,7 @@ export function createPost({title, category, content, subcategory, image}, callb
     const SubCategory = subcategory.subcategory.replace(/\s/g, '');
     const today = new Date(),
       CreationDate = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate(),
+      //CreationDate = today.getFullYear() + pad(today.getMonth() + 1) + pad(today.getDate()) + pad(today.getHours()) + pad(today.getMinutes()) + pad(today.getSeconds()),
       time = today.getTime();
 
     // Path to Posts/ reference
@@ -302,6 +304,7 @@ export function fetchPosts(callback){
   }
 }
 
+//SHOWED POST
 // Delete post from Posts/ and Users/
 // Decrement numActivePosts
 export function deletePost(postId, callback){
@@ -322,6 +325,15 @@ export function deletePost(postId, callback){
     }).catch(err => console.error('Error deleting post:', err));
   }
 }
+
+export function updateLikes(postId){
+  
+}
+
+export function updateShares(postId){
+
+}
+// END SHOWED POST
 
 // news Feed
 export function fetchNewsFeed(){
